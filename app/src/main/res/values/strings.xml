@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Archery Tracker</string>
+
+    <string-array name="sightmark_unit_options">
+        <item>Choose unit</item>
+        <item>m</item>
+        <item>yd</item>
+    </string-array>
+</resources>

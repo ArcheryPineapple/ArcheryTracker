@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".sightmarks.SightMarksActivity">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:id="@+id/sightmarks_dist_layout"
+        android:orientation="horizontal"
+        android:layout_margin="20dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Distance: "
+            android:textSize="20sp"
+            android:layout_weight="0" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="number"
+            android:id="@+id/sightmarks_dist_edit_text"
+            android:layout_weight="1"
+            android:textAlignment="viewStart"
+            android:layout_marginStart="20dp"
+            android:importantForAutofill="no" />
+
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/sightmarks_unit_spinner"
+            android:layout_weight="0"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/sightmarks_dist_layout"
+        android:layout_margin="20dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Sight Mark: "
+            android:textSize="20sp"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="text"
+            android:id="@+id/sightmarks_mark_edit_text"
+            android:textAlignment="viewStart"
+            android:layout_marginEnd="5dp"
+            android:layout_marginStart="5dp"
+            android:importantForAutofill="no"/>
+    </LinearLayout>
+
+    </RelativeLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/sightmarks_save_button"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:backgroundTint="@color/colorPrimary"
+        app:borderWidth="0dp"
+        android:tint="@android:color/white"
+        android:src="@drawable/ic_save" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/sightmarks_delete_button"
+        android:layout_gravity="bottom|start"
+        android:layout_margin="16dp"
+        android:backgroundTint="@color/colorPrimary"
+        app:borderWidth="0dp"
+        android:tint="@android:color/white"
+        android:src="@drawable/ic_delete" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

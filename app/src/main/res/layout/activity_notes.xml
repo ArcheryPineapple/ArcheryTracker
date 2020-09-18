@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".coachingnotes.NotesActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginBottom="65dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="0"
+                android:layout_marginTop="15dp"
+                android:layout_marginStart="10dp"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:id="@+id/notes_date" />
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textSize="20sp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:id="@+id/notes_title"
+                android:importantForAutofill="no" />
+        </LinearLayout>
+            <EditText
+                android:id="@+id/notes_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:background="@android:color/transparent"
+                android:gravity="top"
+                android:textSize="20sp"
+                android:importantForAutofill="no" />
+    </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/notes_save_button"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:backgroundTint="@color/colorPrimary"
+        app:borderWidth="0dp"
+        android:tint="@android:color/white"
+        android:src="@drawable/ic_save" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/notes_delete_button"
+        android:layout_gravity="bottom|start"
+        android:layout_margin="16dp"
+        android:backgroundTint="@color/colorPrimary"
+        app:borderWidth="0dp"
+        android:tint="@android:color/white"
+        android:src="@drawable/ic_delete" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

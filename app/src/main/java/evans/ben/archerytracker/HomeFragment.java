@@ -104,20 +104,16 @@ public class HomeFragment extends Fragment {
         String lastResetDay = sharedPreferencesArrowCounter.getString("resetDay", null);
         lastResetWeek = sharedPreferencesArrowCounter.getString("resetWeek", null);
 
-        // Get today's date
+        // Get today's date as a string for easy comparison to lastResetDay
         String today = LocalDate.now().toString();
-
-        // Getting current day of the week from calendar
-        Calendar calendar = Calendar.getInstance();
-        int day = calendar.get(Calendar.DAY_OF_WEEK);
 
         // For first set up of the app
         if (lastResetDay == null) {
+            // Need to initialise weekVol when app is first used
+            weekVol = 0;
             lastResetDay = today;
             editor.putString("resetDay", lastResetDay);
             editor.apply();
-            // Need to initialise weekVol when app is first used
-            weekVol = 0;
         }
 
         /* Checking to see if we've already reset daily counter today by comparing the stored date
@@ -125,16 +121,20 @@ public class HomeFragment extends Fragment {
         if (!lastResetDay.equals(today)) {
             // Updating weekVol to include arrows shot in the last day
             weekVol += dailyCount;
+            // Reseting dailyCount
             dailyCount = 0;
+            // Setting the lastResetDay to today as we've just performed a reset
             lastResetDay = today;
             editor.putString("resetDay", lastResetDay);
             editor.apply();
         }
 
+        // Getting today's date as a LocalDate to allow use of LocalDate methods
         LocalDate todayLocalDate = LocalDate.now();
         LocalDate isMonday;
-        // Making sure lastResetWeek is not null
+        // This is for first time setup of the app or if an error has occurred in retrieving lastResetWeek
         if (lastResetWeek == null) {
+            // Setting the lastResetWeek to the closest Monday before today
             isMonday = todayLocalDate;
             while (true) {
                 isMonday = isMonday.minusDays(1);
@@ -145,15 +145,14 @@ public class HomeFragment extends Fragment {
             }
         }
 
-        /* Need today and lastResetWeek as local date for checking if last weekly reset was more
+        /* Need lastResetWeek as local date for checking if last weekly reset was more
            than 7  days ago */
-
         LocalDate lastResetWeekLocalDate = LocalDate.parse(lastResetWeek, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
-
-        /* For weekly reset, this needs to be after daily reset otherwise arrows from Sunday
-           are added to weeklyVol on weekly reset. The null is for the first weekly reset */
-        if ((lastResetWeek == null || !lastResetWeek.equals(today)) && day == Calendar.MONDAY) {
+        /* For weekly reset if the app is opened on a Monday, this needs to be after daily reset
+           otherwise arrows from Sunday are added to weeklyVol after weekly reset. The else if handles
+            the case when the user doesn't open the app on a Monday. */
+        if (!lastResetWeek.equals(today) && todayLocalDate.getDayOfWeek() == DayOfWeek.MONDAY) {
             weekVol = 0;
             lastResetWeek = today;
             editor.putString("resetWeek", lastResetWeek);
@@ -207,7 +206,8 @@ public class HomeFragment extends Fragment {
         // sharedPreferences set up
         sharedPreferencesArrowCounter = getActivity().getSharedPreferences("ArrowCounter", Context.MODE_PRIVATE);
         editor = sharedPreferencesArrowCounter.edit();
-        // Saving weekVol and dailyCount
+        /* Saving weekVol, dailyCount and resetWeek. If resetWeek isn't here sometimes the app
+           doesn't reset the week correctly if a monday is skipped not sure why yet. */
         editor.putInt("weekVol", weekVol);
         editor.putInt("counter", dailyCount);
         editor.putString("resetWeek", lastResetWeek);

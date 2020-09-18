@@ -58,12 +58,13 @@ public class RoundActivity extends AppCompatActivity {
         int scoringType;
         List<String> distances;
         List<String> arrowsDistance;
+        Round roundLoad = null;
 
 
         if (roundInProgress) {
             // Setting the values using shared preferences if the round is already in progress
             String jsonLoad = sharedPreferences.getString("round", "");
-            Round roundLoad = gson.fromJson(jsonLoad, Round.class);
+            roundLoad = gson.fromJson(jsonLoad, Round.class);
             roundName = roundLoad.getRoundName().split("\\(");
             distances = roundLoad.getDistances();
             arrowsDistance = roundLoad.getArrowsDistance();
@@ -113,8 +114,16 @@ public class RoundActivity extends AppCompatActivity {
         roundRecyclerView = findViewById(R.id.round_recyclerview);
         roundLayoutManager = new LinearLayoutManager(this);
 
+        Round roundSend;
+        if (roundInProgress) {
+            roundSend = roundLoad;
+        }
+        else {
+            roundSend = round;
+        }
+
         // Need set the inputs for the adapter depending on who the activity was started
-        roundAdapter = new RoundAdapter(distances, arrowsDistance, maxArrowVal);
+        roundAdapter = new RoundAdapter(roundSend, maxArrowVal);
 
         // Connecting the recycler view
         roundRecyclerView.setLayoutManager(roundLayoutManager);

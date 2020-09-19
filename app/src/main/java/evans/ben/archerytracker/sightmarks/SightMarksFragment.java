@@ -17,13 +17,9 @@ import androidx.room.Room;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import evans.ben.archerytracker.R;
-import evans.ben.archerytracker.sightmarks.SightMarksActivity;
-import evans.ben.archerytracker.sightmarks.SightMarksAdapter;
-import evans.ben.archerytracker.sightmarks.SightMarksDatabase;
+
 
 public class SightMarksFragment extends Fragment {
-    private RecyclerView sightMarksRecyclerView;
-    private RecyclerView.LayoutManager sightMarksLayoutManager;
     private SightMarksAdapter sightMarksAdapter;
     public  static SightMarksDatabase sightMarksDatabase;
 
@@ -33,8 +29,8 @@ public class SightMarksFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_sightmarks, container, false);
 
         // Instantiating values
-        sightMarksRecyclerView = view.findViewById(R.id.sightmarks_recyclerview);
-        sightMarksLayoutManager = new LinearLayoutManager(view.getContext());
+        RecyclerView sightMarksRecyclerView = view.findViewById(R.id.sightmarks_recyclerview);
+        RecyclerView.LayoutManager sightMarksLayoutManager = new LinearLayoutManager(view.getContext());
         sightMarksAdapter = new SightMarksAdapter();
 
         // Setting values

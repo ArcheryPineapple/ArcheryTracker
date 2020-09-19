@@ -9,9 +9,6 @@ import android.os.Bundle;
 import evans.ben.archerytracker.R;
 
 public class RoundSelectionActivity extends AppCompatActivity {
-    private RecyclerView roundSelectionRecyclerView;
-    private RecyclerView.LayoutManager roundSelectionLayoutManager;
-    private RoundSelectionAdapter roundSelectionAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,9 +16,9 @@ public class RoundSelectionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_round_selection);
 
         // Instantiating values
-        roundSelectionRecyclerView = findViewById(R.id.round_selection_recyclerview);
-        roundSelectionLayoutManager = new LinearLayoutManager(this);
-        roundSelectionAdapter = new RoundSelectionAdapter();
+        RecyclerView roundSelectionRecyclerView = findViewById(R.id.round_selection_recyclerview);
+        RecyclerView.LayoutManager roundSelectionLayoutManager = new LinearLayoutManager(this);
+        RoundSelectionAdapter roundSelectionAdapter = new RoundSelectionAdapter();
 
         // Connecting the recycler view
         roundSelectionRecyclerView.setLayoutManager(roundSelectionLayoutManager);

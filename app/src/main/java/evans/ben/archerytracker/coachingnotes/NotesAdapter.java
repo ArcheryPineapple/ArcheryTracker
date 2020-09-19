@@ -5,23 +5,18 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.time.format.DateTimeFormatter;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import evans.ben.archerytracker.R;
-import evans.ben.archerytracker.sightmarks.SightMark;
-import evans.ben.archerytracker.sightmarks.SightMarksActivity;
-import evans.ben.archerytracker.sightmarks.SightMarksAdapter;
-import evans.ben.archerytracker.sightmarks.SightMarksFragment;
+
 
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHolder> {
 

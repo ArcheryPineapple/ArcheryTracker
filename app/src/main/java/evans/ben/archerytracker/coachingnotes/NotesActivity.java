@@ -5,21 +5,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import evans.ben.archerytracker.R;
-import evans.ben.archerytracker.sightmarks.SightMarksFragment;
+
 
 public class NotesActivity extends AppCompatActivity {
-    private TextView notesDateTextView;
     private EditText notesTitleEditText;
     private EditText notesContentEditText;
 
@@ -32,7 +28,7 @@ public class NotesActivity extends AppCompatActivity {
         Intent intent = getIntent();
 
         // Accessing the views in the activity
-        notesDateTextView = findViewById(R.id.notes_date);
+        TextView notesDateTextView = findViewById(R.id.notes_date);
         notesTitleEditText = findViewById(R.id.notes_title);
         notesContentEditText = findViewById(R.id.notes_content);
 

@@ -3,10 +3,8 @@ package evans.ben.archerytracker.scoring.input;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -25,6 +23,7 @@ public class ScoringActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         Distance distance = intent.getParcelableExtra("distance");
+        assert distance != null;
         distanceTextView.setText(distance.getDistance());
 
         int arrowsEnd = distance.getArrowsEnd();
@@ -68,7 +67,7 @@ public class ScoringActivity extends AppCompatActivity {
                 arrowsHeader.setPadding(padding, padding, padding, padding);
                 arrowsHeader.setBackgroundResource(R.drawable.cell_shape);
                 arrowsHeader.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-                arrowsHeader.setText("Arrows");
+                arrowsHeader.setText(R.string.arrows);
                 row.addView(arrowsHeader);
             }
             else {
@@ -112,8 +111,8 @@ public class ScoringActivity extends AppCompatActivity {
 
             // For the first row we want to label the columns and give them a thick bottom border
             if (i == 0) {
-                ET.setText("E/T");
-                RT.setText("R/T");
+                ET.setText(R.string.end_total);
+                RT.setText(R.string.running_total);
             }
             scoringTable.addView(row);
         }

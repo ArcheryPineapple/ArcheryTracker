@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,23 +15,15 @@ import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
-
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-import evans.ben.archerytracker.HomeFragment;
 import evans.ben.archerytracker.MainActivity;
 import evans.ben.archerytracker.R;
 import evans.ben.archerytracker.scoring.Round;
 
 public class RoundActivity extends AppCompatActivity {
-    private TextView nameTextView;
-    private TextView totalScoreTextView;
-    private RecyclerView roundRecyclerView;
-    private RecyclerView.LayoutManager roundLayoutManager;
-    private RoundAdapter roundAdapter;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,7 +49,6 @@ public class RoundActivity extends AppCompatActivity {
 
         String[] roundName;
         int scoringType;
-        List<String> distances;
         List<String> arrowsDistance;
         Round roundLoad = null;
 
@@ -66,20 +58,19 @@ public class RoundActivity extends AppCompatActivity {
             String jsonLoad = sharedPreferences.getString("round", "");
             roundLoad = gson.fromJson(jsonLoad, Round.class);
             roundName = roundLoad.getRoundName().split("\\(");
-            distances = roundLoad.getDistances();
             arrowsDistance = roundLoad.getArrowsDistance();
             scoringType = roundLoad.getScoringType();
 
         }
         else {
             // Setting values as the round has been started from the round selection activity
+            assert round != null;
             roundName = round.getRoundName().split("\\(");
-            distances = round.getDistances();
             arrowsDistance = round.getArrowsDistance();
             scoringType = round.getScoringType();
         }
 
-        nameTextView = findViewById(R.id.round_name);
+        TextView nameTextView = findViewById(R.id.round_name);
 
         // For rounds with extra descriptions in brackets after we drop it
         nameTextView.setText(roundName[0]);
@@ -101,7 +92,7 @@ public class RoundActivity extends AppCompatActivity {
             finish();
         }
 
-        totalScoreTextView = findViewById(R.id.round_total_score);
+        TextView totalScoreTextView = findViewById(R.id.round_total_score);
         int totalArrows = 0;
         for (int i = 0; i < arrowsDistance.size(); i++) {
             totalArrows += Integer.parseInt(arrowsDistance.get(i));
@@ -111,8 +102,8 @@ public class RoundActivity extends AppCompatActivity {
         totalScoreTextView.setText(0 + "/" + totalScore);
 
         // Instantiating values
-        roundRecyclerView = findViewById(R.id.round_recyclerview);
-        roundLayoutManager = new LinearLayoutManager(this);
+        RecyclerView roundRecyclerView = findViewById(R.id.round_recyclerview);
+        RecyclerView.LayoutManager roundLayoutManager = new LinearLayoutManager(this);
 
         Round roundSend;
         if (roundInProgress) {
@@ -123,7 +114,7 @@ public class RoundActivity extends AppCompatActivity {
         }
 
         // Need set the inputs for the adapter depending on who the activity was started
-        roundAdapter = new RoundAdapter(roundSend, maxArrowVal);
+        RoundAdapter roundAdapter = new RoundAdapter(roundSend, maxArrowVal);
 
         // Connecting the recycler view
         roundRecyclerView.setLayoutManager(roundLayoutManager);

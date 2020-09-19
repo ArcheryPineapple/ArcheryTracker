@@ -5,7 +5,6 @@ import androidx.room.Query;
 
 import java.util.List;
 
-import evans.ben.archerytracker.sightmarks.SightMark;
 
 // This is where we define the SQL queries we want to implement
 @Dao

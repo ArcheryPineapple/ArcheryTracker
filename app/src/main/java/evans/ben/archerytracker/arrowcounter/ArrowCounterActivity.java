@@ -2,6 +2,7 @@ package evans.ben.archerytracker.arrowcounter;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,6 +17,7 @@ public class ArrowCounterActivity extends AppCompatActivity {
     private TextView arrowCounterTextView;
     private int arrowCount;
 
+    @SuppressLint("DefaultLocale")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +32,7 @@ public class ArrowCounterActivity extends AppCompatActivity {
 
         Button arrowCountAddButton = findViewById(R.id.arrow_counter_add);
         arrowCountAddButton.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("DefaultLocale")
             @Override
             public void onClick(View view) {
                 arrowCount += 1;
@@ -58,6 +61,6 @@ public class ArrowCounterActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = context.getSharedPreferences("ArrowCounter", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt("counter", arrowCount);
-        editor.commit();
+        editor.apply();
     }
 }

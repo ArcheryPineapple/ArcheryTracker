@@ -1,10 +1,10 @@
 package evans.ben.archerytracker;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +18,7 @@ import androidx.fragment.app.Fragment;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
+import java.util.Objects;
 
 import evans.ben.archerytracker.arrowcounter.ArrowCounterActivity;
 import evans.ben.archerytracker.scoring.round.RoundActivity;
@@ -67,16 +67,16 @@ public class HomeFragment extends Fragment {
         /* Intent and context for on click listener need to be up here so that both branches of the
            if statement can assign their values. */
         contextScoring = view.getContext();
-        sharedPreferencesScoring = getActivity().getSharedPreferences("Scoring", Context.MODE_PRIVATE);
+        sharedPreferencesScoring = Objects.requireNonNull(getActivity()).getSharedPreferences("Scoring", Context.MODE_PRIVATE);
         roundInProgress = sharedPreferencesScoring.getBoolean("roundInProgress", false);
 
         // Determines what text to display on button and which activity to start
         if (!roundInProgress) {
-            scoringButton.setText("New Round");
+            scoringButton.setText(R.string.new_round);
             intentScoring = new Intent(contextScoring, RoundSelectionActivity.class);
         }
         else {
-            scoringButton.setText("Continue round");
+            scoringButton.setText(R.string.continue_round);
             intentScoring = new Intent(contextScoring, RoundActivity.class);
         }
 
@@ -91,11 +91,12 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
+    @SuppressLint("DefaultLocale")
     @Override
     public void onResume() {
         super.onResume();
         // sharedPreferences set up
-        sharedPreferencesArrowCounter = getActivity().getSharedPreferences("ArrowCounter", Context.MODE_PRIVATE);
+        sharedPreferencesArrowCounter = Objects.requireNonNull(getActivity()).getSharedPreferences("ArrowCounter", Context.MODE_PRIVATE);
         editor = sharedPreferencesArrowCounter.edit();
 
         // Getting daily counter values and last reset day/week values from shared preferences
@@ -183,11 +184,11 @@ public class HomeFragment extends Fragment {
         roundInProgress = sharedPreferencesScoring.getBoolean("roundInProgress", false);
         // Determines what text to display on button and which activity to start
         if (!roundInProgress) {
-            scoringButton.setText("New Round");
+            scoringButton.setText(R.string.new_round);
             intentScoring = new Intent(contextScoring, RoundSelectionActivity.class);
         }
         else {
-            scoringButton.setText("Continue round");
+            scoringButton.setText(R.string.continue_round);
             intentScoring = new Intent(contextScoring, RoundActivity.class);
         }
 
@@ -204,7 +205,7 @@ public class HomeFragment extends Fragment {
     public void onPause() {
         super.onPause();
         // sharedPreferences set up
-        sharedPreferencesArrowCounter = getActivity().getSharedPreferences("ArrowCounter", Context.MODE_PRIVATE);
+        sharedPreferencesArrowCounter = Objects.requireNonNull(getActivity()).getSharedPreferences("ArrowCounter", Context.MODE_PRIVATE);
         editor = sharedPreferencesArrowCounter.edit();
         /* Saving weekVol, dailyCount and resetWeek. If resetWeek isn't here sometimes the app
            doesn't reset the week correctly if a monday is skipped not sure why yet. */

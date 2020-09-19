@@ -1,8 +1,8 @@
 package evans.ben.archerytracker.scoring.round;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,9 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import evans.ben.archerytracker.R;
 import evans.ben.archerytracker.scoring.Round;
@@ -75,6 +73,7 @@ public class RoundAdapter extends RecyclerView.Adapter<RoundAdapter.RoundViewHol
         return new RoundAdapter.RoundViewHolder(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull RoundAdapter.RoundViewHolder holder, int position) {
         Distance current = distances.get(position);

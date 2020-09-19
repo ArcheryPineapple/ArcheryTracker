@@ -48,7 +48,7 @@ public class Distance implements Parcelable {
     public String getArrowsAtDistance() {
         return arrowsAtDistance;
     }
-    public int getScoringStyle(){
+    public int getScoringStyle() {
         return scoringStyle;
     }
     public int getArrowsEnd(){

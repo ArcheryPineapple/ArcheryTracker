@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">Archery Tracker</string>
-
+    <string name="arrows">Arrows</string>
+    <string name="end_total">E/T</string>
+    <string name="running_total">R/T</string>
+    <string name="new_round">New Round</string>
+    <string name="continue_round">Continue Round</string>
     <string-array name="sightmark_unit_options">
         <item>Choose unit</item>
         <item>m</item>

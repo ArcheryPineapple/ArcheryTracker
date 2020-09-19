@@ -18,7 +18,4 @@ public interface NotesDao {
 
     @Query("DELETE FROM Notes WHERE id = :id")
     void deleteNote(long id);
-
-    @Query("SELECT * FROM Notes WHERE title LIKE '%' || :s || '%' OR content LIKE '%' || :s || '%'")
-    List<Note> searchNotes(String s);
 }

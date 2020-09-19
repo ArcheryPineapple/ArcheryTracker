@@ -135,17 +135,20 @@ public class SightMarksActivity extends AppCompatActivity implements AdapterView
         if (dist == null) {
             int_dist = 0;
         }
-        try {
-            int_dist = Integer.parseInt(dist);
+        else {
+            try {
+                int_dist = Integer.parseInt(dist);
+            }
+            catch (NumberFormatException nfe) {
+                Toast toast = Toast.makeText(getApplicationContext(),
+                        "The distance you entered was not a number it has been set to 0.",
+                        Toast.LENGTH_LONG);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toast.show();
+                int_dist = 0;
+            }
         }
-        catch (NumberFormatException nfe) {
-            Toast toast = Toast.makeText(getApplicationContext(),
-                    "The distance you entered was not a number it has been set to 0.",
-                    Toast.LENGTH_LONG);
-            toast.setGravity(Gravity.CENTER, 0, 0);
-            toast.show();
-            int_dist = 0;
-        }
+
     }
 
     /* This method detects if any fields are empty and if there are any empty fields it deletes the

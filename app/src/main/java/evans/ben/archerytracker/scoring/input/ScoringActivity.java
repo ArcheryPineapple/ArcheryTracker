@@ -73,13 +73,19 @@ public class ScoringActivity extends AppCompatActivity {
             }
             else {
                 for (int j = 0; j < arrowsEnd; j++) {
-                    TextView arrow = new TextView(this);
+                    final TextView arrow = new TextView(this);
                     arrow.setLayoutParams(lp);
                     arrow.setTextSize(textSize);
                     arrow.setPadding(padding, padding, padding, padding );
                     // Setting borders for cells
                     arrow.setBackgroundResource(R.drawable.cell_shape);
                     arrow.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                    arrow.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            arrow.setBackgroundResource(R.drawable.cell_shape_selected);
+                        }
+                    });
                     row.addView(arrow);
             }
 

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -33,40 +34,52 @@ public class ScoringActivity extends AppCompatActivity {
 
     public void init(int arrowsEnd, int rows) {
         TableLayout scoringTable = findViewById(R.id.scoring_table);
-        // Used to fix the dimensions of the boxes on the scoring table
+        // Used so that table stretches to fit screen
+        scoringTable.setStretchAllColumns(true);
 
-        int width = Resources.getSystem().getDisplayMetrics().widthPixels;
-        int dim = 90;
-        int dimTotalsAlter = 50;
+        // So that text size can be altered for all textViews easily
         int textSize = 20;
+        // So that padding can be altered for all textViews easily
+        int padding = 5;
 
         for (int i  = 0; i < rows; i++) {
             TableRow row = new TableRow(this);
-            TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT);
-            TableRow.LayoutParams headerLp = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT);
+
+            /* The different LayoutParams are to alter the weight to get totals columns wider than
+                arrow columns. The WRAP_CONTENT is so the height of the rows are right size for the
+                text */
+            TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,
+                    TableRow.LayoutParams.WRAP_CONTENT);
+            lp.weight = 1;
+            TableRow.LayoutParams headerLp = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,
+                    TableRow.LayoutParams.WRAP_CONTENT);
             headerLp.span = arrowsEnd;
+            TableRow.LayoutParams totalsLp = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,
+                    TableRow.LayoutParams.WRAP_CONTENT);
+            totalsLp.weight = (float) 1.5;
             row.setLayoutParams(lp);
+
+
             if (i == 0) {
                 TextView arrowsHeader = new TextView(this);
                 arrowsHeader.setLayoutParams(headerLp);
                 arrowsHeader.setTextSize(textSize);
-                arrowsHeader.setPadding(5,5,5,5);
+                arrowsHeader.setTypeface(Typeface.DEFAULT_BOLD);
+                arrowsHeader.setPadding(padding, padding, padding, padding);
                 arrowsHeader.setBackgroundResource(R.drawable.cell_shape);
                 arrowsHeader.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
                 arrowsHeader.setText("Arrows");
-                arrowsHeader.setHeight(dim);
-                arrowsHeader.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
                 row.addView(arrowsHeader);
             }
             else {
                 for (int j = 0; j < arrowsEnd; j++) {
                     TextView arrow = new TextView(this);
-                    arrow.setHeight(dim);
-                    arrow.setWidth(dim);
+                    arrow.setLayoutParams(lp);
                     arrow.setTextSize(textSize);
-                    arrow.setPadding(5, 5,5,5 );
+                    arrow.setPadding(padding, padding, padding, padding );
                     // Setting borders for cells
                     arrow.setBackgroundResource(R.drawable.cell_shape);
+                    arrow.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
                     row.addView(arrow);
             }
 
@@ -74,46 +87,26 @@ public class ScoringActivity extends AppCompatActivity {
 
             // Setting up the columns at the end of the scoring table
             TextView ET = new TextView(this);
+            ET.setLayoutParams(totalsLp);
             ET.setTextSize(textSize);
-            ET.setPadding(5,5,5,5);
+            ET.setPadding(padding, padding, padding, padding);
             ET.setBackgroundResource(R.drawable.cell_shape);
-            ET.setHeight(dim);
-            ET.setWidth(dim + dimTotalsAlter);
             ET.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+            ET.setTypeface(Typeface.DEFAULT_BOLD);
             row.addView(ET);
 
-            TextView Hits = new TextView(this);
-            Hits.setTextSize(textSize);
-            Hits.setPadding(5,5,5,5);
-            Hits.setBackgroundResource(R.drawable.cell_shape);
-            Hits.setHeight(dim);
-            Hits.setWidth(dim);
-            Hits.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-            row.addView(Hits);
-
-            TextView Golds = new TextView(this);
-            Golds.setTextSize(textSize);
-            Golds.setPadding(5,5,5,5);
-            Golds.setBackgroundResource(R.drawable.cell_shape);
-            Golds.setHeight(dim);
-            Golds.setWidth(dim);
-            Golds.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-            row.addView(Golds);
-
             TextView RT = new TextView(this);
+            RT.setLayoutParams(totalsLp);
             RT.setTextSize(textSize);
-            RT.setPadding(5,5,5,5);
+            RT.setPadding(padding, padding, padding, padding);
             RT.setBackgroundResource(R.drawable.cell_shape);
-            RT.setHeight(dim);
-            RT.setWidth(dim + dimTotalsAlter);
             RT.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+            RT.setTypeface(Typeface.DEFAULT_BOLD);
             row.addView(RT);
 
             // For the first row we want to label the columns and give them a thick bottom border
             if (i == 0) {
                 ET.setText("E/T");
-                Hits.setText("H");
-                Golds.setText("G");
                 RT.setText("R/T");
             }
             scoringTable.addView(row);

@@ -38,7 +38,6 @@ public class RoundAdapter extends RecyclerView.Adapter<RoundAdapter.RoundViewHol
             this.roundDistance = view.findViewById(R.id.round_row_dist);
             this.roundScore = view.findViewById(R.id.round_row_score);
 
-            // Put on click listener here later
             this.roundContainerView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

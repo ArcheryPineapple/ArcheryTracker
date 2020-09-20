@@ -13,6 +13,7 @@
         android:layout_height="match_parent"
         android:id="@+id/round_row_dist"
         android:textAlignment="viewStart"
+        android:textSize="20sp"
         android:layout_weight="1"/>
 
     <TextView
@@ -20,5 +21,6 @@
         android:layout_height="match_parent"
         android:id="@+id/round_row_score"
         android:textAlignment="viewEnd"
+        android:textSize="20sp"
         android:layout_weight="1"/>
 </LinearLayout>

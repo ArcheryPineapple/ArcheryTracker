@@ -50,16 +50,48 @@ public class RoundSelectionAdapter extends RecyclerView.Adapter<RoundSelectionAd
         }
     }
 
-    // The list of rounds that can be chosen, will hard code more once I know WA1440 works fully
+    // The list of rounds that can be chosen, rounds are alphabetical order with indoor rounds first
     private List<Round> roundsList = Arrays.asList(
             new Round("Portsmouth", 2,
                     new ArrayList<String>() {{ add("First half"); add("Second half"); }},
                     new ArrayList<String>() {{ add("30"); add("30");  }},
                     3),
-          new Round("WA1440 (Gents)", 0,
+            new Round("WA18 (3 spot)", 3,
+                    new ArrayList<String>() {{ add("First half"); add("Second half"); }},
+                    new ArrayList<String>() {{ add("30"); add("30");  }},
+                    3),
+            new Round("Worcester", 4,
+                    new ArrayList<String>() {{ add("First half"); add("Second half"); }},
+                    new ArrayList<String>() {{ add("30"); add("30"); }},
+                    5),
+            new Round ("Albion", 1,
+                    new ArrayList<String>() {{ add("80yd"); add("60yd"); add("50yd"); }},
+                    new ArrayList<String>() {{ add("36"); add("36"); add("36"); }},
+                    6),
+            new Round("Hereford", 1,
+                    new ArrayList<String>() {{ add("80yd"); add("60yd"); add("50yd"); }},
+                    new ArrayList<String>() {{ add("72"); add("48"); add("24"); }},
+                    6),
+            new Round ("St George", 1,
+                    new ArrayList<String>() {{ add("100yd"); add("80yd"); add("60yd"); }},
+                    new ArrayList<String>() {{ add("36"); add("36"); add("36"); }},
+                    6),
+            new Round("WA1440 (Gents)", 0,
                   new ArrayList<String>() {{ add("90m"); add("70m"); add("50m"); add("30m"); }},
                   new ArrayList<String>() {{ add("36"); add("36"); add("36"); add("36"); }},
-                  6)
+                  6),
+            new Round("WA1440 (Ladies)", 0,
+                    new ArrayList<String>() {{ add("70m"); add("60m"); add("50m"); add("30m"); }},
+                    new ArrayList<String>() {{ add("36"); add("36"); add("36"); add("36"); }},
+                    6),
+            new Round("WA 70", 0,
+                    new ArrayList<String>() {{ add("First half"); add("Second half"); }},
+                    new ArrayList<String>() {{ add("36"); add("36"); }},
+                    6),
+            new Round("York", 1,
+                    new ArrayList<String>() {{ add("100yd"); add("80yd"); add("60yd"); }},
+                    new ArrayList<String>() {{ add("72"); add("48"); add("24"); }},
+                    6)
     );
 
     @NonNull

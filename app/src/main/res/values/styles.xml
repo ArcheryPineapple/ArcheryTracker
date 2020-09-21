@@ -5,6 +5,8 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <!--Use this to change default text colour-->
+        <!--<item name="android:textColor">@android:color/black</item>-->
     </style>
 
 </resources>

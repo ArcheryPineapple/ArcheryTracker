@@ -107,19 +107,25 @@ public class RoundActivity extends AppCompatActivity {
             // Gson to convert the arrowValues to an array
             Gson gsonScoring = new Gson();
 
+            /* Creating the distanceValues array which is full of zeroes to be updated, this
+               handles the case when a distance hasn't been shot yet hence the loop exits on the
+               first if condition */
+            for (int j = 0; j < distances.size(); j++) {
+                distanceValues.add(0);
+            }
+
             // Getting the values for each distance
             for (int i = 0; i < distances.size(); i++) {
                 arrowValuesString = sharedPreferencesScoring.getString(distances.get(i), null);
 
-                // Need to exit the loop for the distances that haven't been filled yet
+                // Need to exit this loop for the distances that haven't been filled yet
                 if (arrowValuesString == null) {
                     continue;
                 }
 
-                // Reading arrowValues into a temporary arrow for addition to be done
+                // Reading arrowValues into a temporary array for addition to be done
                 String[][] arrowValues = gsonScoring.fromJson(arrowValuesString, String[][].class);
-                /* Starting a new sum each time we go through the for loop so need to add a new
-                   element to list to add to */
+                /* Starting a new sum each time we go through the for loop so need to reset current */
                 int current = 0;
                 // Summing up total for arrowValues
                 for (String[] arrowValue : arrowValues) {
@@ -132,26 +138,21 @@ public class RoundActivity extends AppCompatActivity {
                         } else {
                             current += Integer.parseInt(arrowValue[k]);
                         }
-
-                        // Checking if an arrow has been shot
+                        /* Checking if an arrow has been shot for the purpose of when to display
+                           save button */
                         if (!arrowValue[k].equals("")) {
                             totalArrowsShot += 1;
                         }
                     }
                 }
-                // Load distance values from shared preferences an update values
+
+                // Load distance values from shared preferences and update values
                 String savedDistanceValues = sharedPreferencesScoring.getString("distanceValues", null);
-                if (savedDistanceValues == null) {
-                    // Setting distance values to zero as there was an error loading from sharedPreferences
-                    for (int j = 0; j < distances.size(); j++) {
-                        distanceValues.add(0);
-                    }
-                }
-                else {
-                    Type distanceValuesType = new TypeToken<ArrayList<Integer>>(){}.getType();
-                    distanceValues = gson.fromJson(savedDistanceValues, distanceValuesType);
-                    distanceValues.set(i, current);
-                }
+                // Needs to look at the unpacked version NOT the string from sharedPref
+                // Getting the data from the gson file
+                Type distanceValuesType = new TypeToken<ArrayList<Integer>>(){}.getType();
+                distanceValues = gson.fromJson(savedDistanceValues, distanceValuesType);
+                distanceValues.set(i, current);
             }
         }
         else {
@@ -168,7 +169,6 @@ public class RoundActivity extends AppCompatActivity {
             }
         }
 
-        Log.d("Ben", "" + distanceValues);
         TextView nameTextView = findViewById(R.id.round_name);
 
         // For rounds with extra descriptions in brackets after we drop it

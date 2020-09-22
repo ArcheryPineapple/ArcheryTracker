@@ -51,11 +51,7 @@ public class ScoringActivity extends AppCompatActivity {
         loadArrows();
 
         // Setting up so that on opening the first empty arrow textView is selected
-        int check = firstSelectedArrow(arrowsEnd, rows);
-        // In case all arrow textViews are filled
-        if (check == 1) {
-            selectedArrow = 10;
-        }
+        firstSelectedArrow(arrowsEnd, rows);
 
         initKeyboard(distance.getScoringStyle());
 
@@ -176,7 +172,7 @@ public class ScoringActivity extends AppCompatActivity {
     }
 
     // This method is used to select the first empty arrow textView
-    private int firstSelectedArrow(int arrowsEnd, int ends) {
+    private void firstSelectedArrow(int arrowsEnd, int ends) {
         for (int i = 1; i < ends; i++) {
             for (int j = 0; j < arrowsEnd; j++) {
                 String currentID = String.format("%s%s", i, j);
@@ -184,11 +180,14 @@ public class ScoringActivity extends AppCompatActivity {
                 if (current.getText() == null || current.getText().equals("")) {
                     current.setBackgroundResource(R.drawable.cell_shape_selected);
                     selectedArrow = Integer.parseInt(currentID);
-                    return 0;
+                    return;
                 }
             }
         }
-        return 1;
+        String ID = String.format("%s%s", ends - 1, arrowsEnd - 1);
+        selectedArrow = Integer.parseInt(ID);
+        TextView current = findViewById(selectedArrow);
+        current.setBackgroundResource(R.drawable.cell_shape_selected);
     }
 
     // This method makes the keyboard depending on the scoring type
@@ -353,7 +352,8 @@ public class ScoringActivity extends AppCompatActivity {
                 int row = selectedArrow / 10;
 
                 if (col == arrowsEnd - 1 && row == rows - 1) {
-                    selectedArrow = 10;
+                    selectedArrow = currentArrow.getId();
+                    currentArrow.setBackgroundResource(R.drawable.cell_shape_selected);
                 }
                 else if (col == arrowsEnd - 1) {
                     // For concatenating next selectedArrow value
@@ -510,6 +510,10 @@ public class ScoringActivity extends AppCompatActivity {
         SharedPreferences sharedPreferencesArrowCounter = this.getSharedPreferences("ArrowCounter", Context.MODE_PRIVATE);
         int currentCounterValue = sharedPreferencesArrowCounter.getInt("counter", 0);
         int counter = currentCounterValue + (onSaveArrowsShot - onLoadArrowsShot);
+        // To deal with rare case where counter ends up negative
+        if (counter < 0) {
+            counter = 0;
+        }
         sharedPreferencesArrowCounter.edit().putInt("counter", counter).apply();
     }
 }

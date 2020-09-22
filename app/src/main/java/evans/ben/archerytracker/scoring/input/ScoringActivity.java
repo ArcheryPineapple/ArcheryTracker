@@ -8,7 +8,6 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TableLayout;
@@ -18,8 +17,6 @@ import android.widget.TextView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 
-
-import java.lang.reflect.Array;
 import java.util.Locale;
 
 import evans.ben.archerytracker.R;
@@ -29,6 +26,7 @@ public class ScoringActivity extends AppCompatActivity {
     private int arrowsEnd;
     private int rows;
     private Distance distance;
+    private int onLoadArrowsShot;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -442,13 +440,15 @@ public class ScoringActivity extends AppCompatActivity {
 
     /* Method for loading in arrow values from shared preferences, returns 1 if there is an error
        loading from sharedPreferences */
-    private int loadArrows() {
+    private void loadArrows() {
+        // Resetting onLoadArrowsShot each time we load the activity
+        onLoadArrowsShot = 0;
         Gson gson = new Gson();
         SharedPreferences sharedPreferences = this.getSharedPreferences("Scoring", Context.MODE_PRIVATE);
         String savedArrows = sharedPreferences.getString(distance.getDistance(), null);
         // Checking if what we read was correct
         if (savedArrows == null) {
-            return 1;
+            return;
         }
 
         // Converting stored arrows into an array to be used to fill table
@@ -460,11 +460,15 @@ public class ScoringActivity extends AppCompatActivity {
                 String currentID = String.format(Locale.getDefault(), "%s%s", i, j);
                 TextView current = findViewById(Integer.parseInt(currentID));
                 current.setText(arrowValues[i - 1][j]);
+
+                // Checking if the value corresponds to an arrow
+                if (!arrowValues[i - 1][j].equals("")) {
+                    onLoadArrowsShot += 1;
+                }
             }
         }
         // Updating totals
         updateTotals(1);
-        return 0;
     }
 
     // Overriding onPause in order to save arrow values
@@ -473,6 +477,8 @@ public class ScoringActivity extends AppCompatActivity {
         super.onPause();
         // Array to store arrow values in
         String[][] arrowValues = new String[rows - 1][arrowsEnd];
+        // Counter for number of arrows being saved
+        int onSaveArrowsShot = 0;
 
         // Iterate over all arrow textViews and save to the array
         for (int i = 1; i < rows; i++) {
@@ -481,8 +487,14 @@ public class ScoringActivity extends AppCompatActivity {
                 TextView current = findViewById(Integer.parseInt(currentID));
                 String content = (String) current.getText();
                 arrowValues[i - 1][j] = content;
+
+                // Checking if the value corresponds to an arrow
+                if (!arrowValues[i - 1][j].equals("")) {
+                    onSaveArrowsShot += 1;
+                }
             }
         }
+
         // Need Gson in order to store the array as a string
         Gson gson = new Gson();
         String savedArrowValues = gson.toJson(arrowValues);
@@ -493,5 +505,11 @@ public class ScoringActivity extends AppCompatActivity {
         // We to save this with reference to the distance so we use that as the name for shared pref
         editor.putString(distance.getDistance(), savedArrowValues);
         editor.apply();
+
+        // Updating arrow counter
+        SharedPreferences sharedPreferencesArrowCounter = this.getSharedPreferences("ArrowCounter", Context.MODE_PRIVATE);
+        int currentCounterValue = sharedPreferencesArrowCounter.getInt("counter", 0);
+        int counter = currentCounterValue + (onSaveArrowsShot - onLoadArrowsShot);
+        sharedPreferencesArrowCounter.edit().putInt("counter", counter).apply();
     }
 }

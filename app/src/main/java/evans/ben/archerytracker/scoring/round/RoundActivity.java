@@ -60,6 +60,7 @@ public class RoundActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("distanceValues", savedDistanceValues);
         editor.apply();
+
     }
 
     private void setUp() {
@@ -86,6 +87,7 @@ public class RoundActivity extends AppCompatActivity {
         int scoringType;
         List<String> arrowsDistance;
         Round roundLoad = null;
+        int totalArrowsShot = 0;
 
 
         if (roundInProgress) {
@@ -129,6 +131,11 @@ public class RoundActivity extends AppCompatActivity {
                             current += 0;
                         } else {
                             current += Integer.parseInt(arrowValue[k]);
+                        }
+
+                        // Checking if an arrow has been shot
+                        if (!arrowValue[k].equals("")) {
+                            totalArrowsShot += 1;
                         }
                     }
                 }
@@ -199,8 +206,8 @@ public class RoundActivity extends AppCompatActivity {
                 currentScore += distanceValues.get(i);
             }
         }
-
-        totalScoreTextView.setText(currentScore + "/" + totalScore);
+        String totalScoreString = currentScore + "/" + totalScore;
+        totalScoreTextView.setText(totalScoreString);
 
         // Instantiating values
         RecyclerView roundRecyclerView = findViewById(R.id.round_recyclerview);
@@ -232,6 +239,18 @@ public class RoundActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        // Save button
+        FloatingActionButton saveFAB = findViewById(R.id.round_save_button);
+
+        // The save button only appears when the round has been completed
+        if (totalArrowsShot == totalArrows) {
+            saveFAB.setVisibility(View.VISIBLE);
+        }
+        else {
+            saveFAB.setVisibility(View.GONE);
+        }
+
 
     }
 }

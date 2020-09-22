@@ -2,7 +2,9 @@ package evans.ben.archerytracker.scoring.input;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -14,7 +16,11 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.gson.Gson;
 
+
+import java.lang.reflect.Array;
+import java.util.Locale;
 
 import evans.ben.archerytracker.R;
 
@@ -22,6 +28,7 @@ public class ScoringActivity extends AppCompatActivity {
     private int selectedArrow;
     private int arrowsEnd;
     private int rows;
+    private Distance distance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,16 +38,19 @@ public class ScoringActivity extends AppCompatActivity {
         TextView distanceTextView = findViewById(R.id.scoring_activity_distance_header);
 
         Intent intent = getIntent();
-        Distance distance = intent.getParcelableExtra("distance");
+        distance = intent.getParcelableExtra("distance");
         assert distance != null;
         distanceTextView.setText(distance.getDistance());
         arrowsEnd = distance.getArrowsEnd();
 
         int arrowsEnd = distance.getArrowsEnd();
-        rows = Integer.parseInt(distance.getArrowsAtDistance()) / arrowsEnd + 1;
+        rows = (Integer.parseInt(distance.getArrowsAtDistance()) / arrowsEnd) + 1;
 
         // Making the table and setting up on click listeners for arrow value textViews
         init(arrowsEnd, rows);
+
+        //Loading arrows
+        loadArrows();
 
         // Setting up so that on opening the first empty arrow textView is selected
         int check = firstSelectedArrow(arrowsEnd, rows);
@@ -428,5 +438,60 @@ public class ScoringActivity extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    /* Method for loading in arrow values from shared preferences, returns 1 if there is an error
+       loading from sharedPreferences */
+    private int loadArrows() {
+        Gson gson = new Gson();
+        SharedPreferences sharedPreferences = this.getSharedPreferences("Scoring", Context.MODE_PRIVATE);
+        String savedArrows = sharedPreferences.getString(distance.getDistance(), null);
+        // Checking if what we read was correct
+        if (savedArrows == null) {
+            return 1;
+        }
+
+        // Converting stored arrows into an array to be used to fill table
+        String[][] arrowValues = gson.fromJson(savedArrows, String[][].class);
+
+        // Filling table with saved values
+        for (int i = 1; i < rows; i++) {
+            for (int j = 0; j < arrowsEnd; j++) {
+                String currentID = String.format(Locale.getDefault(), "%s%s", i, j);
+                TextView current = findViewById(Integer.parseInt(currentID));
+                current.setText(arrowValues[i - 1][j]);
+            }
+        }
+        // Updating totals
+        updateTotals(1);
+        return 0;
+    }
+
+    // Overriding onPause in order to save arrow values
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // Array to store arrow values in
+        String[][] arrowValues = new String[rows - 1][arrowsEnd];
+
+        // Iterate over all arrow textViews and save to the array
+        for (int i = 1; i < rows; i++) {
+            for (int j = 0; j < arrowsEnd; j++) {
+                String currentID = String.format(Locale.getDefault(), "%s%s", i, j);
+                TextView current = findViewById(Integer.parseInt(currentID));
+                String content = (String) current.getText();
+                arrowValues[i - 1][j] = content;
+            }
+        }
+        // Need Gson in order to store the array as a string
+        Gson gson = new Gson();
+        String savedArrowValues = gson.toJson(arrowValues);
+
+        // Setting up shared preference to store arrow values
+        SharedPreferences sharedPreferences = this.getSharedPreferences("Scoring", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        // We to save this with reference to the distance so we use that as the name for shared pref
+        editor.putString(distance.getDistance(), savedArrowValues);
+        editor.apply();
     }
 }

@@ -13,13 +13,16 @@ public class Distance implements Parcelable {
     private int scoringStyle;
     // Arrows per end
     private int arrowsEnd;
+    // Distance value for ongoing rounds
+    private int distanceValue;
 
     // Constructor
-    public Distance(String distance, String arrowsAtDistance, int scoringStyle, int arrowsEnd) {
+    public Distance(String distance, String arrowsAtDistance, int scoringStyle, int arrowsEnd, int distanceValue) {
         this.distance = distance;
         this.arrowsAtDistance = arrowsAtDistance;
         this.scoringStyle = scoringStyle;
         this.arrowsEnd = arrowsEnd;
+        this.distanceValue = distanceValue;
     }
 
     protected Distance(Parcel in) {
@@ -27,6 +30,7 @@ public class Distance implements Parcelable {
         arrowsAtDistance = in.readString();
         scoringStyle = in.readInt();
         arrowsEnd = in.readInt();
+        distanceValue = in.readInt();
     }
 
     public static final Creator<Distance> CREATOR = new Creator<Distance>() {
@@ -55,6 +59,10 @@ public class Distance implements Parcelable {
         return arrowsEnd;
     }
 
+    public int getDistanceValue() {
+        return distanceValue;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -66,5 +74,6 @@ public class Distance implements Parcelable {
         parcel.writeString(arrowsAtDistance);
         parcel.writeInt(scoringStyle);
         parcel.writeInt(arrowsEnd);
+        parcel.writeInt(distanceValue);
     }
 }

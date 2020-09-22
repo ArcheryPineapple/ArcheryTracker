@@ -51,14 +51,14 @@ public class RoundAdapter extends RecyclerView.Adapter<RoundAdapter.RoundViewHol
     }
 
     // Constructor to allow list of distances for the round selected to be passed to the adapter
-    public RoundAdapter(Round round, int maxArrowVal) {
+    public RoundAdapter(Round round, int maxArrowVal, List<Integer> distanceValues) {
         // Trying to pass the data set from the RoundActivity using a constructor
         List<String> distancesList = round.getDistances();
         List<String> arrowsDistanceList = round.getArrowsDistance();
         maxArrowValue = maxArrowVal;
 
         for (int i = 0; i < distancesList.size(); i++) {
-            distances.add(new Distance(distancesList.get(i), arrowsDistanceList.get(i), round.getScoringType(), round.getArrowsPerEnd()));
+            distances.add(new Distance(distancesList.get(i), arrowsDistanceList.get(i), round.getScoringType(), round.getArrowsPerEnd(), distanceValues.get(i)));
         }
     }
 
@@ -83,7 +83,7 @@ public class RoundAdapter extends RecyclerView.Adapter<RoundAdapter.RoundViewHol
         int totalDistance = arrowsPerDistance * maxArrowValue;
         String totalDistanceString = Integer.toString(totalDistance);
         // 0 is a placeholder which filled with score for this distance once I get round to scoring
-        holder.roundScore.setText(0 + "/" + totalDistanceString);
+        holder.roundScore.setText(current.getDistanceValue() + "/" + totalDistanceString);
     }
 
     @Override

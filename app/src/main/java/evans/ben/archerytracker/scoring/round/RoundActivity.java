@@ -15,6 +15,10 @@ import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 import evans.ben.archerytracker.MainActivity;
@@ -22,12 +26,43 @@ import evans.ben.archerytracker.R;
 import evans.ben.archerytracker.scoring.Round;
 
 public class RoundActivity extends AppCompatActivity {
+    private List<Integer> distanceValues = new ArrayList<>();
 
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_round);
+        // Calling the method set up to do all things required to display desired information
+          setUp();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        this.startActivity(new Intent(this, MainActivity.class));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Calling the method set up to do all things required to display desired information
+        setUp();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // Saving the distanceValues list
+        Gson gson = new Gson();
+        String savedDistanceValues = gson.toJson(distanceValues);
+        SharedPreferences sharedPreferences = this.getSharedPreferences("Scoring", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("distanceValues", savedDistanceValues);
+        editor.apply();
+    }
+
+    private void setUp() {
         Intent intent = getIntent();
         Round round = intent.getParcelableExtra("roundSelected");
 
@@ -60,7 +95,57 @@ public class RoundActivity extends AppCompatActivity {
             roundName = roundLoad.getRoundName().split("\\(");
             arrowsDistance = roundLoad.getArrowsDistance();
             scoringType = roundLoad.getScoringType();
+            List<String> distances = roundLoad.getDistances();
+            int arrowsEnd = roundLoad.getArrowsPerEnd();
 
+            // Shared preferences for accessing saved values
+            SharedPreferences sharedPreferencesScoring = this.getSharedPreferences("Scoring", Context.MODE_PRIVATE);
+            // String to store what we read from shared preference
+            String arrowValuesString;
+            // Gson to convert the arrowValues to an array
+            Gson gsonScoring = new Gson();
+
+            // Getting the values for each distance
+            for (int i = 0; i < distances.size(); i++) {
+                arrowValuesString = sharedPreferencesScoring.getString(distances.get(i), null);
+
+                // Need to exit the loop for the distances that haven't been filled yet
+                if (arrowValuesString == null) {
+                    continue;
+                }
+
+                // Reading arrowValues into a temporary arrow for addition to be done
+                String[][] arrowValues = gsonScoring.fromJson(arrowValuesString, String[][].class);
+                /* Starting a new sum each time we go through the for loop so need to add a new
+                   element to list to add to */
+                int current = 0;
+                // Summing up total for arrowValues
+                for (String[] arrowValue : arrowValues) {
+                    for (int k = 0; k < arrowsEnd; k++) {
+                        // Dealing with non numeric scoring values when summing
+                        if (arrowValue[k].equals("X")) {
+                            current += 10;
+                        } else if (arrowValue[k].equals("M") || arrowValue[k].equals("")) {
+                            current += 0;
+                        } else {
+                            current += Integer.parseInt(arrowValue[k]);
+                        }
+                    }
+                }
+                // Load distance values from shared preferences an update values
+                String savedDistanceValues = sharedPreferencesScoring.getString("distanceValues", null);
+                if (savedDistanceValues == null) {
+                    // Setting distance values to zero as there was an error loading from sharedPreferences
+                    for (int j = 0; j < distances.size(); j++) {
+                        distanceValues.add(0);
+                    }
+                }
+                else {
+                    Type distanceValuesType = new TypeToken<ArrayList<Integer>>(){}.getType();
+                    distanceValues = gson.fromJson(savedDistanceValues, distanceValuesType);
+                    distanceValues.set(i, current);
+                }
+            }
         }
         else {
             // Setting values as the round has been started from the round selection activity
@@ -68,8 +153,15 @@ public class RoundActivity extends AppCompatActivity {
             roundName = round.getRoundName().split("\\(");
             arrowsDistance = round.getArrowsDistance();
             scoringType = round.getScoringType();
+            List<String> distances = round.getDistances();
+
+            // Setting distanceValues to zero since there is no information to load from sharedPref
+            for (int i = 0; i < distances.size(); i++) {
+                distanceValues.add(0);
+            }
         }
 
+        Log.d("Ben", "" + distanceValues);
         TextView nameTextView = findViewById(R.id.round_name);
 
         // For rounds with extra descriptions in brackets after we drop it
@@ -98,8 +190,17 @@ public class RoundActivity extends AppCompatActivity {
             totalArrows += Integer.parseInt(arrowsDistance.get(i));
         }
         int totalScore = totalArrows * maxArrowVal;
-        // 0 is a placeholder until scoring is worked out
-        totalScoreTextView.setText(0 + "/" + totalScore);
+
+        // Calculating round total score
+        int currentScore = 0;
+
+        if (distanceValues != null) {
+            for (int i = 0; i < distanceValues.size(); i++) {
+                currentScore += distanceValues.get(i);
+            }
+        }
+
+        totalScoreTextView.setText(currentScore + "/" + totalScore);
 
         // Instantiating values
         RecyclerView roundRecyclerView = findViewById(R.id.round_recyclerview);
@@ -114,7 +215,7 @@ public class RoundActivity extends AppCompatActivity {
         }
 
         // Need set the inputs for the adapter depending on who the activity was started
-        RoundAdapter roundAdapter = new RoundAdapter(roundSend, maxArrowVal);
+        RoundAdapter roundAdapter = new RoundAdapter(roundSend, maxArrowVal, distanceValues);
 
         // Connecting the recycler view
         roundRecyclerView.setLayoutManager(roundLayoutManager);
@@ -125,18 +226,12 @@ public class RoundActivity extends AppCompatActivity {
         delFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                editor.clear();
                 editor.putBoolean("roundInProgress", false);
                 editor.apply();
                 finish();
             }
         });
 
-
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        this.startActivity(new Intent(this, MainActivity.class));
     }
 }

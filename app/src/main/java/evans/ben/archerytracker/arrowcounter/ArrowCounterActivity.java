@@ -11,13 +11,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.Locale;
+
 import evans.ben.archerytracker.R;
 
 public class ArrowCounterActivity extends AppCompatActivity {
     private TextView arrowCounterTextView;
     private int arrowCount;
 
-    @SuppressLint("DefaultLocale")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,7 +29,7 @@ public class ArrowCounterActivity extends AppCompatActivity {
         Intent intent = getIntent();
         arrowCount = intent.getIntExtra("count", 0);
 
-        arrowCounterTextView.setText(String.format("%03d", arrowCount));
+        arrowCounterTextView.setText(String.format(Locale.getDefault(),"%03d", arrowCount));
 
         Button arrowCountAddButton = findViewById(R.id.arrow_counter_add);
         arrowCountAddButton.setOnClickListener(new View.OnClickListener() {
@@ -46,7 +47,7 @@ public class ArrowCounterActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (arrowCount != 0) {
                     arrowCount -= 1;
-                    arrowCounterTextView.setText(String.format("%03d", arrowCount));
+                    arrowCounterTextView.setText(String.format(Locale.getDefault(),"%03d", arrowCount));
                 }
             }
         });

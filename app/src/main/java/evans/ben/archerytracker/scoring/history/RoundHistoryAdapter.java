@@ -31,6 +31,7 @@ public class RoundHistoryAdapter extends RecyclerView.Adapter<RoundHistoryAdapte
         public LinearLayout historyContainerView;
         public TextView roundNameTextView;
         public TextView roundScoreTextView;
+        public TextView roundDateTextView;
 
         public RoundHistoryViewHolder(@NonNull View view) {
             super(view);
@@ -38,6 +39,7 @@ public class RoundHistoryAdapter extends RecyclerView.Adapter<RoundHistoryAdapte
             historyContainerView = view.findViewById(R.id.history_row);
             roundNameTextView = view.findViewById(R.id.history_row_round_name);
             roundScoreTextView = view.findViewById(R.id.history_row_round_score);
+            roundDateTextView = view.findViewById(R.id.history_row_round_date);
 
             /* On click listener to start the ScorecardActivity and send the id of the
                CompletedRound selected */
@@ -71,6 +73,7 @@ public class RoundHistoryAdapter extends RecyclerView.Adapter<RoundHistoryAdapte
         CompletedRound current = completedRoundList.get(position);
         holder.historyContainerView.setTag(current);
         holder.roundNameTextView.setText(current.roundName);
+        holder.roundDateTextView.setText(current.date);
 
         // Calculate maximum score
         int maxArrowVal;

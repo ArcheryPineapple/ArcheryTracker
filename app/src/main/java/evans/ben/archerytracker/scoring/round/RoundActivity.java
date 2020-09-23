@@ -33,7 +33,6 @@ import evans.ben.archerytracker.scoring.scorecard.ScorecardActivity;
 
 public class RoundActivity extends AppCompatActivity {
     private List<Integer> distanceValues = new ArrayList<>();
-    public static CompletedRoundsDatabase completedRoundsDatabase;
     // For combining arrays of arrow values for each distance into one list
     private List<String[][]> arrowValuesList = new ArrayList<>();
 
@@ -126,9 +125,6 @@ public class RoundActivity extends AppCompatActivity {
                 }
 
             }
-
-
-
 
             // Getting the values for each distance
             for (int i = 0; i < distances.size(); i++) {
@@ -259,10 +255,6 @@ public class RoundActivity extends AppCompatActivity {
             }
         });
 
-        // Setting up CompletedRoundsDatabase
-        completedRoundsDatabase = Room.databaseBuilder(this, CompletedRoundsDatabase.class,
-                "CompletedRounds").allowMainThreadQueries().build();
-
         // Save button
         FloatingActionButton saveFAB = findViewById(R.id.round_save_button);
 
@@ -286,7 +278,7 @@ public class RoundActivity extends AppCompatActivity {
                 // Using gson to serialise list of arrow values
                 String serialisedArrowValues = gson.toJson(arrowValuesList);
                 // Adding completed round to database
-                Long id = completedRoundsDatabase.completedRoundsDao().saveCompletedRound(today, roundSend.getRoundName(), serialisedRound,serialisedArrowValues, finalCurrentScore, "", "");
+                Long id = MainActivity.completedRoundsDatabase.completedRoundsDao().saveCompletedRound(today, roundSend.getRoundName(), serialisedRound,serialisedArrowValues, finalCurrentScore, "", "");
 
                 // Resetting roundInProgress information
                 editor.clear();

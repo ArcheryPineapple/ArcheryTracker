@@ -22,6 +22,7 @@ import evans.ben.archerytracker.MainActivity;
 import evans.ben.archerytracker.R;
 import evans.ben.archerytracker.scoring.CompletedRound;
 import evans.ben.archerytracker.scoring.Round;
+import evans.ben.archerytracker.scoring.history.RoundHistoryActivity;
 import evans.ben.archerytracker.scoring.input.ScoringActivity;
 import evans.ben.archerytracker.scoring.round.RoundActivity;
 
@@ -42,7 +43,7 @@ public class ScorecardActivity extends AppCompatActivity {
         fromHistory = intent.getBooleanExtra("fromHistory", false);
 
         // Getting the current CompletedRound object from the database
-        CompletedRound current = RoundActivity.completedRoundsDatabase.completedRoundsDao().getRound(id);
+        CompletedRound current = MainActivity.completedRoundsDatabase.completedRoundsDao().getRound(id);
         // Gson for reading serialised data
         Gson gson = new Gson();
         // Getting all the fields
@@ -65,7 +66,11 @@ public class ScorecardActivity extends AppCompatActivity {
         archerSig.setText(current.archerString);
         scorerSig.setText(current.scorerString);
 
-
+        // To do:
+        // Create the tables for each distance for the arrow values to go in
+        // Fill the tables for each distance, with arrow values and calculate the ETs and RTs
+        // Calculate: number of arrows for each scoring value, number of hits, average
+        // Populate summary table with above information
 
 
     }
@@ -76,7 +81,7 @@ public class ScorecardActivity extends AppCompatActivity {
         // Updating signatures on exit from this activity in the database
         String archerString =  archerSig.getText().toString();
         String scorerString = scorerSig.getText().toString();
-        RoundActivity.completedRoundsDatabase.completedRoundsDao().updateSignatures(id, archerString, scorerString);
+        MainActivity.completedRoundsDatabase.completedRoundsDao().updateSignatures(id, archerString, scorerString);
     }
 
     @Override
@@ -84,15 +89,12 @@ public class ScorecardActivity extends AppCompatActivity {
         super.onBackPressed();
         // Overriding onBackPressed to send to the correct activity depending on usage
         Intent intent;
-        /*if (fromHistory) {
+        if (fromHistory) {
             intent = new Intent(this, RoundHistoryActivity.class);
         }
         else {
             intent = new Intent(this, MainActivity.class);
-        }*/
-
-        // For now while History activity hasn't been made set intent here
-        intent = new Intent(this, MainActivity.class);
+        }
 
         startActivity(intent);
     }

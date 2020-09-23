@@ -16,6 +16,7 @@ import evans.ben.archerytracker.scoring.CompletedRoundsDatabase;
 import evans.ben.archerytracker.sightmarks.SightMarksFragment;
 
 public class MainActivity extends AppCompatActivity {
+    public static CompletedRoundsDatabase completedRoundsDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +26,10 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView.setOnNavigationItemSelectedListener(navListener);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
+
+        // Setting up CompletedRoundsDatabase
+        completedRoundsDatabase = Room.databaseBuilder(this, CompletedRoundsDatabase.class,
+                "CompletedRounds").allowMainThreadQueries().build();
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =

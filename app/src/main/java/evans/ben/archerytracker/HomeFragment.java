@@ -21,6 +21,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 import evans.ben.archerytracker.arrowcounter.ArrowCounterActivity;
+import evans.ben.archerytracker.scoring.history.RoundHistoryActivity;
+import evans.ben.archerytracker.scoring.pbs.PBsActivity;
 import evans.ben.archerytracker.scoring.round.RoundActivity;
 import evans.ben.archerytracker.scoring.roundselection.RoundSelectionActivity;
 
@@ -35,13 +37,14 @@ public class HomeFragment extends Fragment {
     private boolean roundInProgress;
     private Button scoringButton;
     private Intent intentScoring;
-    private Context contextScoring;
     private String lastResetWeek;
+    private Context context;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+        context = view.getContext();
 
         // Getting access to the text views displaying arrow counts
         dailyTextView = view.findViewById(R.id.daily_count_view);
@@ -53,10 +56,29 @@ public class HomeFragment extends Fragment {
         arrowVolumeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Context contextArrowVolume = view.getContext();
-                Intent intentArrowVolume = new Intent(contextArrowVolume, ArrowCounterActivity.class);
+                Intent intentArrowVolume = new Intent(context, ArrowCounterActivity.class);
                 intentArrowVolume.putExtra("count", dailyCount);
-                contextArrowVolume.startActivity(intentArrowVolume);
+                context.startActivity(intentArrowVolume);
+            }
+        });
+
+        // Round history button opens the round history activity
+        Button roundHistoryButton = view.findViewById(R.id.history_button);
+        roundHistoryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intentHistory = new Intent(context, RoundHistoryActivity.class);
+                context.startActivity(intentHistory);
+            }
+        });
+
+        // PBs button opens the PB activity
+        Button pbsButton = view.findViewById(R.id.PB_button);
+        pbsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intentPB = new Intent(context, PBsActivity.class);
+                context.startActivity(intentPB);
             }
         });
 
@@ -66,25 +88,24 @@ public class HomeFragment extends Fragment {
         scoringButton = view.findViewById(R.id.scoring_button);
         /* Intent and context for on click listener need to be up here so that both branches of the
            if statement can assign their values. */
-        contextScoring = view.getContext();
         sharedPreferencesScoring = Objects.requireNonNull(getActivity()).getSharedPreferences("Scoring", Context.MODE_PRIVATE);
         roundInProgress = sharedPreferencesScoring.getBoolean("roundInProgress", false);
 
         // Determines what text to display on button and which activity to start
         if (!roundInProgress) {
             scoringButton.setText(R.string.new_round);
-            intentScoring = new Intent(contextScoring, RoundSelectionActivity.class);
+            intentScoring = new Intent(context, RoundSelectionActivity.class);
         }
         else {
             scoringButton.setText(R.string.continue_round);
-            intentScoring = new Intent(contextScoring, RoundActivity.class);
+            intentScoring = new Intent(context, RoundActivity.class);
         }
 
         // Opening the activity depending on state of round in progress
         scoringButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                contextScoring.startActivity(intentScoring);
+                context.startActivity(intentScoring);
             }
         });
 
@@ -185,18 +206,18 @@ public class HomeFragment extends Fragment {
         // Determines what text to display on button and which activity to start
         if (!roundInProgress) {
             scoringButton.setText(R.string.new_round);
-            intentScoring = new Intent(contextScoring, RoundSelectionActivity.class);
+            intentScoring = new Intent(context, RoundSelectionActivity.class);
         }
         else {
             scoringButton.setText(R.string.continue_round);
-            intentScoring = new Intent(contextScoring, RoundActivity.class);
+            intentScoring = new Intent(context, RoundActivity.class);
         }
 
         // Opening the activity depending on state of round in progress
         scoringButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                contextScoring.startActivity(intentScoring);
+                context.startActivity(intentScoring);
             }
         });
     }

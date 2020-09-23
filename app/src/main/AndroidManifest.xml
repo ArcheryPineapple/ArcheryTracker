@@ -9,7 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".scoring.scorecard.ScorecardActivity"></activity>
+        <activity android:name=".scoring.pbs.PBsActivity"></activity>
+        <activity android:name=".scoring.history.RoundHistoryActivity" />
+        <activity android:name=".scoring.scorecard.ScorecardActivity" />
         <activity android:name=".scoring.input.ScoringActivity" />
         <activity android:name=".scoring.round.RoundActivity" />
         <activity android:name=".scoring.roundselection.RoundSelectionActivity" />

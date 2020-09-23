@@ -3,6 +3,7 @@ package evans.ben.archerytracker.scoring.round;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -18,23 +19,29 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import evans.ben.archerytracker.MainActivity;
 import evans.ben.archerytracker.R;
+import evans.ben.archerytracker.scoring.CompletedRoundsDatabase;
 import evans.ben.archerytracker.scoring.Round;
+import evans.ben.archerytracker.scoring.scorecard.ScorecardActivity;
 
 public class RoundActivity extends AppCompatActivity {
     private List<Integer> distanceValues = new ArrayList<>();
+    public static CompletedRoundsDatabase completedRoundsDatabase;
+    // For combining arrays of arrow values for each distance into one list
+    private List<String[][]> arrowValuesList = new ArrayList<>();
 
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_round);
-        // Calling the method set up to do all things required to display desired information
-          setUp();
     }
 
     @Override
@@ -65,7 +72,7 @@ public class RoundActivity extends AppCompatActivity {
 
     private void setUp() {
         Intent intent = getIntent();
-        Round round = intent.getParcelableExtra("roundSelected");
+        final Round round = intent.getParcelableExtra("roundSelected");
 
         /* So we know a round has been started and can change the behaviour of the round button on
         the home fragment */
@@ -74,7 +81,7 @@ public class RoundActivity extends AppCompatActivity {
         // Check if a round is in progress
         boolean roundInProgress = sharedPreferences.getBoolean("roundInProgress", false);
         // Using GSON to save round object
-        Gson gson = new Gson();
+        final Gson gson = new Gson();
 
         if(!roundInProgress) {
             editor.putBoolean("roundInProgress", true);
@@ -83,7 +90,7 @@ public class RoundActivity extends AppCompatActivity {
             editor.apply();
         }
 
-        String[] roundName;
+        final String[] roundName;
         int scoringType;
         List<String> arrowsDistance;
         Round roundLoad = null;
@@ -104,15 +111,24 @@ public class RoundActivity extends AppCompatActivity {
             SharedPreferences sharedPreferencesScoring = this.getSharedPreferences("Scoring", Context.MODE_PRIVATE);
             // String to store what we read from shared preference
             String arrowValuesString;
-            // Gson to convert the arrowValues to an array
-            Gson gsonScoring = new Gson();
 
+            // Creating a placeholder array to fill arrowValuesList with
+            String[][] placeholder = new String[1][];
             /* Creating the distanceValues array which is full of zeroes to be updated, this
                handles the case when a distance hasn't been shot yet hence the loop exits on the
                first if condition */
             for (int j = 0; j < distances.size(); j++) {
                 distanceValues.add(0);
+                // Creating the arrowValues list with correct dimensions
+                if (arrowValuesList == null || arrowValuesList.size() < distances.size()) {
+                    assert arrowValuesList != null;
+                    arrowValuesList.add(placeholder);
+                }
+
             }
+
+
+
 
             // Getting the values for each distance
             for (int i = 0; i < distances.size(); i++) {
@@ -124,7 +140,9 @@ public class RoundActivity extends AppCompatActivity {
                 }
 
                 // Reading arrowValues into a temporary array for addition to be done
-                String[][] arrowValues = gsonScoring.fromJson(arrowValuesString, String[][].class);
+                String[][] arrowValues = gson.fromJson(arrowValuesString, String[][].class);
+                //
+                arrowValuesList.set(i, arrowValues);
                 /* Starting a new sum each time we go through the for loop so need to reset current */
                 int current = 0;
                 // Summing up total for arrowValues
@@ -152,6 +170,7 @@ public class RoundActivity extends AppCompatActivity {
                 // Getting the data from the gson file
                 Type distanceValuesType = new TypeToken<ArrayList<Integer>>(){}.getType();
                 distanceValues = gson.fromJson(savedDistanceValues, distanceValuesType);
+                assert distanceValues != null;
                 distanceValues.set(i, current);
             }
         }
@@ -213,7 +232,7 @@ public class RoundActivity extends AppCompatActivity {
         RecyclerView roundRecyclerView = findViewById(R.id.round_recyclerview);
         RecyclerView.LayoutManager roundLayoutManager = new LinearLayoutManager(this);
 
-        Round roundSend;
+        final Round roundSend;
         if (roundInProgress) {
             roundSend = roundLoad;
         }
@@ -240,6 +259,10 @@ public class RoundActivity extends AppCompatActivity {
             }
         });
 
+        // Setting up CompletedRoundsDatabase
+        completedRoundsDatabase = Room.databaseBuilder(this, CompletedRoundsDatabase.class,
+                "CompletedRounds").allowMainThreadQueries().build();
+
         // Save button
         FloatingActionButton saveFAB = findViewById(R.id.round_save_button);
 
@@ -251,6 +274,31 @@ public class RoundActivity extends AppCompatActivity {
             saveFAB.setVisibility(View.GONE);
         }
 
+        // On click listener for save button so it can save rounds and start to score card activity
+        final int finalCurrentScore = currentScore;
+        saveFAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Getting the current date
+                String today = LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MMM-yy"));
+                // Using gson to serialise the round object
+                String serialisedRound = gson.toJson(roundSend);
+                // Using gson to serialise list of arrow values
+                String serialisedArrowValues = gson.toJson(arrowValuesList);
+                // Adding completed round to database
+                Long id = completedRoundsDatabase.completedRoundsDao().saveCompletedRound(today, roundSend.getRoundName(), serialisedRound,serialisedArrowValues, finalCurrentScore, "", "");
+
+                // Resetting roundInProgress information
+                editor.clear();
+                editor.putBoolean("roundInProgress", false);
+                editor.apply();
+
+                Context context = view.getContext();
+                Intent intentSave = new Intent(context, ScorecardActivity.class);
+                intentSave.putExtra("id", id);
+                context.startActivity(intentSave);
+            }
+        });
 
     }
 }

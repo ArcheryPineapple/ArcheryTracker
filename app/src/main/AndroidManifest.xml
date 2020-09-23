@@ -9,8 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".scoring.input.ScoringActivity"/>
-        <activity android:name=".scoring.round.RoundActivity"></activity>
+        <activity android:name=".scoring.scorecard.ScorecardActivity"></activity>
+        <activity android:name=".scoring.input.ScoringActivity" />
+        <activity android:name=".scoring.round.RoundActivity" />
         <activity android:name=".scoring.roundselection.RoundSelectionActivity" />
         <activity android:name=".arrowcounter.ArrowCounterActivity" />
         <activity

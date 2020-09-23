@@ -3,6 +3,7 @@ package evans.ben.archerytracker;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.room.Room;
 
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -11,6 +12,7 @@ import android.view.MenuItem;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import evans.ben.archerytracker.coachingnotes.NotesFragment;
+import evans.ben.archerytracker.scoring.CompletedRoundsDatabase;
 import evans.ben.archerytracker.sightmarks.SightMarksFragment;
 
 public class MainActivity extends AppCompatActivity {

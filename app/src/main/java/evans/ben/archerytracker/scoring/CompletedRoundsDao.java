@@ -37,4 +37,8 @@ public interface CompletedRoundsDao {
     // Get the serialised round object searching by roundName
     @Query("SELECT round FROM CompletedRounds WHERE roundName = :roundName")
     String getRoundObject(String roundName);
+
+    // Delete round
+    @Query("DELETE FROM CompletedRounds WHERE id = :id")
+    void deleteRound(Long id);
 }

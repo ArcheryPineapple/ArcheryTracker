@@ -1,10 +1,13 @@
 package evans.ben.archerytracker.scoring.scorecard;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
@@ -97,5 +100,22 @@ public class ScorecardActivity extends AppCompatActivity {
         }
 
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.scorecard_delete, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int ItemID = item.getItemId();
+
+        if (ItemID == R.id.scorecard_action_delete) {
+            MainActivity.completedRoundsDatabase.completedRoundsDao().deleteRound(id);
+        }
+        finish();
+        return super.onOptionsItemSelected(item);
     }
 }

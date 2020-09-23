@@ -3,9 +3,7 @@ package evans.ben.archerytracker.scoring.round;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.Room;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -22,12 +20,10 @@ import java.lang.reflect.Type;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import evans.ben.archerytracker.MainActivity;
 import evans.ben.archerytracker.R;
-import evans.ben.archerytracker.scoring.CompletedRoundsDatabase;
 import evans.ben.archerytracker.scoring.Round;
 import evans.ben.archerytracker.scoring.scorecard.ScorecardActivity;
 
@@ -36,7 +32,7 @@ public class RoundActivity extends AppCompatActivity {
     // For combining arrays of arrow values for each distance into one list
     private List<String[][]> arrowValuesList = new ArrayList<>();
 
-    @SuppressLint("SetTextI18n")
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,94 +85,40 @@ public class RoundActivity extends AppCompatActivity {
             editor.apply();
         }
 
-        final String[] roundName;
+        String roundName;
         int scoringType;
         List<String> arrowsDistance;
         Round roundLoad = null;
         int totalArrowsShot = 0;
 
 
+        List<String> distances;
+        int arrowsEnd;
         if (roundInProgress) {
             // Setting the values using shared preferences if the round is already in progress
             String jsonLoad = sharedPreferences.getString("round", "");
             roundLoad = gson.fromJson(jsonLoad, Round.class);
-            roundName = roundLoad.getRoundName().split("\\(");
+            roundName = roundLoad.getRoundName();
             arrowsDistance = roundLoad.getArrowsDistance();
             scoringType = roundLoad.getScoringType();
-            List<String> distances = roundLoad.getDistances();
-            int arrowsEnd = roundLoad.getArrowsPerEnd();
-
-            // Shared preferences for accessing saved values
-            SharedPreferences sharedPreferencesScoring = this.getSharedPreferences("Scoring", Context.MODE_PRIVATE);
-            // String to store what we read from shared preference
-            String arrowValuesString;
-
-            // Creating a placeholder array to fill arrowValuesList with
-            String[][] placeholder = new String[1][];
-            /* Creating the distanceValues array which is full of zeroes to be updated, this
-               handles the case when a distance hasn't been shot yet hence the loop exits on the
-               first if condition */
-            for (int j = 0; j < distances.size(); j++) {
-                distanceValues.add(0);
-                // Creating the arrowValues list with correct dimensions
-                if (arrowValuesList == null || arrowValuesList.size() < distances.size()) {
-                    assert arrowValuesList != null;
-                    arrowValuesList.add(placeholder);
-                }
-
-            }
-
-            // Getting the values for each distance
-            for (int i = 0; i < distances.size(); i++) {
-                arrowValuesString = sharedPreferencesScoring.getString(distances.get(i), null);
-
-                // Need to exit this loop for the distances that haven't been filled yet
-                if (arrowValuesString == null) {
-                    continue;
-                }
-
-                // Reading arrowValues into a temporary array for addition to be done
-                String[][] arrowValues = gson.fromJson(arrowValuesString, String[][].class);
-                //
-                arrowValuesList.set(i, arrowValues);
-                /* Starting a new sum each time we go through the for loop so need to reset current */
-                int current = 0;
-                // Summing up total for arrowValues
-                for (String[] arrowValue : arrowValues) {
-                    for (int k = 0; k < arrowsEnd; k++) {
-                        // Dealing with non numeric scoring values when summing
-                        if (arrowValue[k].equals("X")) {
-                            current += 10;
-                        } else if (arrowValue[k].equals("M") || arrowValue[k].equals("")) {
-                            current += 0;
-                        } else {
-                            current += Integer.parseInt(arrowValue[k]);
-                        }
-                        /* Checking if an arrow has been shot for the purpose of when to display
-                           save button */
-                        if (!arrowValue[k].equals("")) {
-                            totalArrowsShot += 1;
-                        }
-                    }
-                }
-
-                // Load distance values from shared preferences and update values
-                String savedDistanceValues = sharedPreferencesScoring.getString("distanceValues", null);
-                // Needs to look at the unpacked version NOT the string from sharedPref
-                // Getting the data from the gson file
-                Type distanceValuesType = new TypeToken<ArrayList<Integer>>(){}.getType();
-                distanceValues = gson.fromJson(savedDistanceValues, distanceValuesType);
-                assert distanceValues != null;
-                distanceValues.set(i, current);
-            }
+            distances = roundLoad.getDistances();
+            arrowsEnd = roundLoad.getArrowsPerEnd();
+             /* Load distance values from shared preferences and update values need this outside for loop
+           to avoid issue of overwriting changes each loop */
+            String savedDistanceValues = sharedPreferences.getString("distanceValues", null);
+            // Needs to look at the unpacked version NOT the string from sharedPref
+            // Getting the data from the gson file
+            Type distanceValuesType = new TypeToken<List<Integer>>(){}.getType();
+            distanceValues = gson.fromJson(savedDistanceValues, distanceValuesType);
         }
         else {
             // Setting values as the round has been started from the round selection activity
             assert round != null;
-            roundName = round.getRoundName().split("\\(");
+            roundName = round.getRoundName();
             arrowsDistance = round.getArrowsDistance();
             scoringType = round.getScoringType();
-            List<String> distances = round.getDistances();
+            distances = round.getDistances();
+            arrowsEnd = round.getArrowsPerEnd();
 
             // Setting distanceValues to zero since there is no information to load from sharedPref
             for (int i = 0; i < distances.size(); i++) {
@@ -184,10 +126,67 @@ public class RoundActivity extends AppCompatActivity {
             }
         }
 
+        // String to store what we read from shared preference
+        String arrowValuesString;
+
+        // Creating a placeholder array to fill arrowValuesList with
+        String[][] placeholder = new String[1][];
+            /* Creating the distanceValues array which is full of zeroes to be updated, this
+               handles the case when a distance hasn't been shot yet hence the loop exits on the
+               first if condition */
+        for (int j = 0; j < distances.size(); j++) {
+            assert distanceValues != null;
+            distanceValues.add(0);
+            // Creating the arrowValues list with correct dimensions
+            if (arrowValuesList == null || arrowValuesList.size() < distances.size()) {
+                assert arrowValuesList != null;
+                arrowValuesList.add(placeholder);
+            }
+        }
+
+
+        // Getting the values for each distance
+        for (int i = 0; i < distances.size(); i++) {
+            arrowValuesString = sharedPreferences.getString(distances.get(i), null);
+
+            // Need to exit this loop for the distances that haven't been filled yet
+            if (!(arrowValuesString == null)) {
+                // Reading arrowValues into a temporary array for addition to be done
+                String[][] arrowValues = gson.fromJson(arrowValuesString, String[][].class);
+
+                arrowValuesList.set(i, arrowValues);
+                // Starting a new sum each time we go through the for loop so need to reset current
+                int current = 0;
+                // Calculating number of rows for this distance
+                int rows = Integer.parseInt(arrowsDistance.get(i)) / arrowsEnd;
+
+                // Summing up total for arrowValues
+                for (int j = 0; j < rows; j++) {
+                    for (int k = 0; k < arrowsEnd; k++) {
+                        // Dealing with non numeric scoring values when summing
+                        if (arrowValues[j][k].equals("X")) {
+                            current += 10;
+                        } else if (arrowValues[j][k].equals("M") || arrowValues[j][k].equals("")) {
+                            current += 0;
+                        } else {
+                            current += Integer.parseInt(arrowValues[j][k]);
+                        }
+                        /* Checking if an arrow has been shot for the purpose of when to display
+                           save button */
+                        if (!arrowValues[j][k].equals("")) {
+                            totalArrowsShot += 1;
+                        }
+                    }
+                }
+                assert distanceValues != null;
+                distanceValues.set(i, current);
+            }
+        }
+
         TextView nameTextView = findViewById(R.id.round_name);
 
         // For rounds with extra descriptions in brackets after we drop it
-        nameTextView.setText(roundName[0]);
+        nameTextView.setText(roundName);
 
         int maxArrowVal;
 

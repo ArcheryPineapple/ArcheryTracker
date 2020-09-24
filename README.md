@@ -3,9 +3,9 @@ This is my CS50 final project.
 
 ## Features
 * Arrow counter
- * A daily arrow counter is shown on the bottom right of the home screen, it includes arrows added via the arrow counter or from arrows shot in scored rounds. This counter resets each day.
- * A weekly arrow counter is shown on the bottom left of the home screen, it shows the number of arrows shot from the previous Monday to the current date inclusive.
- * There is an arrow counter which can be used to add and substract arrows from the daily arrow counter using plus and minus buttons. Accessed by pressing the "Arrow Counter" button on the home screen.
+  * A daily arrow counter is shown on the bottom right of the home screen, it includes arrows added via the arrow counter or from arrows shot in scored rounds. This counter resets each day.
+  * A weekly arrow counter is shown on the bottom left of the home screen, it shows the number of arrows shot from the previous Monday to the current date inclusive.
+  * There is an arrow counter which can be used to add and substract arrows from the daily arrow counter using plus and minus buttons. Accessed by pressing the "Arrow Counter" button on the home screen.
 
 * Shooting a round
   * The app includes a selection of archery rounds. Once you click "New Round" you'll be able to choose from this list, you can also search the list by round name.

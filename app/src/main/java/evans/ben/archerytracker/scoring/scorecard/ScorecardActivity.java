@@ -3,10 +3,10 @@ package evans.ben.archerytracker.scoring.scorecard;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,11 +20,8 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import org.w3c.dom.Text;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import evans.ben.archerytracker.MainActivity;
@@ -32,8 +29,7 @@ import evans.ben.archerytracker.R;
 import evans.ben.archerytracker.scoring.CompletedRound;
 import evans.ben.archerytracker.scoring.Round;
 import evans.ben.archerytracker.scoring.history.RoundHistoryActivity;
-import evans.ben.archerytracker.scoring.input.ScoringActivity;
-import evans.ben.archerytracker.scoring.round.RoundActivity;
+
 
 public class ScorecardActivity extends AppCompatActivity {
     private boolean fromHistory;
@@ -41,6 +37,7 @@ public class ScorecardActivity extends AppCompatActivity {
     private EditText scorerSig;
     private Long id;
 
+    @SuppressLint({"SetTextI18n", "DefaultLocale"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -422,7 +419,7 @@ public class ScorecardActivity extends AppCompatActivity {
         averageTextView.setTextSize(15);
         hitsTextView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         averageTextView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-        String hitsContent = Integer.toString(hits) + "/" + Integer.toString(totalArrows);
+        String hitsContent = hits + "/" + totalArrows;
         hitsTextView.setText(hitsContent);
         averageTextView.setText(String.format("%.2f", average));
         secondRow.addView(hitsTextView);

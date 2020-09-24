@@ -2,6 +2,7 @@ package evans.ben.archerytracker.scoring.pbs;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,7 +17,6 @@ import java.util.List;
 
 import evans.ben.archerytracker.MainActivity;
 import evans.ben.archerytracker.R;
-import evans.ben.archerytracker.scoring.CompletedRound;
 import evans.ben.archerytracker.scoring.Round;
 
 public class PBsActivity extends AppCompatActivity {
@@ -27,6 +27,7 @@ public class PBsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_p_bs);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onResume() {
         super.onResume();

@@ -61,7 +61,7 @@ public class SightMarksActivity extends AppCompatActivity implements AdapterView
         }
 
         // Setting up spinner for unit selection
-        Spinner sightMarksSpinner = (Spinner) findViewById(R.id.sightmarks_unit_spinner);
+        Spinner sightMarksSpinner = findViewById(R.id.sightmarks_unit_spinner);
         ArrayAdapter<CharSequence> sightMarksSpinnerAdapter = ArrayAdapter
                 .createFromResource(this,
                 R.array.sightmark_unit_options, android.R.layout.simple_spinner_item);

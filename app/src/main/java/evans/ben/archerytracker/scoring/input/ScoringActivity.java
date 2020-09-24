@@ -2,13 +2,13 @@ package evans.ben.archerytracker.scoring.input;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TableLayout;
@@ -18,7 +18,6 @@ import android.widget.TextView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 
-import java.util.Arrays;
 import java.util.Locale;
 
 import evans.ben.archerytracker.R;
@@ -378,6 +377,7 @@ public class ScoringActivity extends AppCompatActivity {
     }
 
     // Updating ET and RT values
+    @SuppressLint("SetTextI18n")
     private void updateTotals(int row) {
         for (int i = row; i < rows; i++) {
             String ETID = String.format("20%s", i);

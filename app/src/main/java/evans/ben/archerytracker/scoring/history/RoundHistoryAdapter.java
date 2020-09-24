@@ -1,5 +1,6 @@
 package evans.ben.archerytracker.scoring.history;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -23,7 +24,6 @@ import evans.ben.archerytracker.MainActivity;
 import evans.ben.archerytracker.R;
 import evans.ben.archerytracker.scoring.CompletedRound;
 import evans.ben.archerytracker.scoring.Round;
-import evans.ben.archerytracker.scoring.round.RoundActivity;
 import evans.ben.archerytracker.scoring.scorecard.ScorecardActivity;
 
 public class RoundHistoryAdapter extends RecyclerView.Adapter<RoundHistoryAdapter.RoundHistoryViewHolder> implements Filterable {
@@ -94,6 +94,7 @@ public class RoundHistoryAdapter extends RecyclerView.Adapter<RoundHistoryAdapte
         return new RoundHistoryAdapter.RoundHistoryViewHolder(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull RoundHistoryViewHolder holder, int position) {
         CompletedRound current;

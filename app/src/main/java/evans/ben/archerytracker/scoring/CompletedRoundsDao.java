@@ -41,4 +41,8 @@ public interface CompletedRoundsDao {
     // Delete round
     @Query("DELETE FROM CompletedRounds WHERE id = :id")
     void deleteRound(Long id);
+
+    // Getting CompletedRound object when searching by roundName
+    @Query("SELECT * FROM CompletedRounds WHERE roundName LIKE '%' || :search || '%'")
+    List<CompletedRound> roundHistorySearch(String search);
 }

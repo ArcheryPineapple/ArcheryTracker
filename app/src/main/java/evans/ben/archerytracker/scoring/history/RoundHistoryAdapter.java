@@ -6,6 +6,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -24,8 +26,32 @@ import evans.ben.archerytracker.scoring.Round;
 import evans.ben.archerytracker.scoring.round.RoundActivity;
 import evans.ben.archerytracker.scoring.scorecard.ScorecardActivity;
 
-public class RoundHistoryAdapter extends RecyclerView.Adapter<RoundHistoryAdapter.RoundHistoryViewHolder> {
+public class RoundHistoryAdapter extends RecyclerView.Adapter<RoundHistoryAdapter.RoundHistoryViewHolder> implements Filterable {
+    private List<CompletedRound> filtered = new ArrayList<>();
 
+    @Override
+    public Filter getFilter() {
+        return new RoundHistoryFilter();
+    }
+
+    private class RoundHistoryFilter extends Filter {
+
+        @Override
+        protected FilterResults performFiltering(CharSequence searchTerm) {
+            List<CompletedRound> filteredRounds = MainActivity.completedRoundsDatabase.completedRoundsDao()
+                    .roundHistorySearch((String) searchTerm);
+            FilterResults results = new FilterResults();
+            results.values = filteredRounds;
+            results.count = filteredRounds.size();
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+            filtered = (List<CompletedRound>) filterResults.values;
+            notifyDataSetChanged();
+        }
+    }
 
     public static class RoundHistoryViewHolder extends RecyclerView.ViewHolder {
         public LinearLayout historyContainerView;
@@ -70,7 +96,15 @@ public class RoundHistoryAdapter extends RecyclerView.Adapter<RoundHistoryAdapte
 
     @Override
     public void onBindViewHolder(@NonNull RoundHistoryViewHolder holder, int position) {
-        CompletedRound current = completedRoundList.get(position);
+        CompletedRound current;
+        // Determining whether or not to use search results
+        if (filtered == null || filtered.size() == 0) {
+            current = completedRoundList.get(position);
+        }
+        else {
+            current = filtered.get(position);
+        }
+
         holder.historyContainerView.setTag(current);
         holder.roundNameTextView.setText(current.roundName);
         holder.roundDateTextView.setText(current.date);
@@ -110,7 +144,13 @@ public class RoundHistoryAdapter extends RecyclerView.Adapter<RoundHistoryAdapte
 
     @Override
     public int getItemCount() {
-        return completedRoundList.size();
+        if (filtered == null || filtered.size() == 0) {
+            return completedRoundList.size();
+        }
+        else {
+            return filtered.size();
+        }
+
     }
 
     public void reloadHistory() {

@@ -4,42 +4,41 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_gravity="center"
-        android:layout_margin="100dp">
+        android:paddingBottom="100dp"
+        android:layout_margin="75dp">
 
         <Button
             android:id="@+id/scoring_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/colorPrimary"
-            android:textColor="@android:color/white"
-            android:layout_gravity="center" />
+            android:textColor="@android:color/white" />
+
         <Button
+            android:id="@+id/arrow_counter_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Arrow Counter"
             android:backgroundTint="@color/colorPrimary"
-            android:textColor="@android:color/white"
-            android:id="@+id/arrow_counter_button"
-            android:layout_gravity="center"/>
+            android:text="Arrow Counter"
+            android:textColor="@android:color/white" />
+
         <Button
             android:id="@+id/history_button"
             android:text="Round History"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/colorPrimary"
-            android:textColor="@android:color/white"
-            android:layout_gravity="center" />
+            android:textColor="@android:color/white" />
         <Button
             android:id="@+id/PB_button"
             android:text="PB's"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/colorPrimary"
-            android:textColor="@android:color/white"
-            android:layout_gravity="center" />
+            android:textColor="@android:color/white" />
     </LinearLayout>
 
     <LinearLayout

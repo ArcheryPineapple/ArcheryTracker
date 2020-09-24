@@ -1,37 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".scoring.scorecard.ScorecardActivity">
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:id="@+id/scorecard_layout_for_distance_tables" />
-    <TableLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/scorecard_table_for_summary" />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
-        <EditText
+        android:orientation="vertical" >
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="0.5"
-            android:id="@+id/scorecard_archer_sig"
-            android:hint="Archer Signature"/>
-        <EditText
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/scorecard_layout_for_distance_tables" />
+        <TableLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="0.5"
-            android:id="@+id/scorecard_scorer_sig"
-            android:hint="Scorer Signature"/>
+            android:layout_height="wrap_content"
+            android:id="@+id/scorecard_table_for_summary" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:id="@+id/scorecard_archer_sig"
+                android:hint="Archer Signature"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:id="@+id/scorecard_scorer_sig"
+                android:hint="Scorer Signature"/>
+        </LinearLayout>
     </LinearLayout>
-
-</LinearLayout>
+</ScrollView>

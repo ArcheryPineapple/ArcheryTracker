@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -19,7 +21,41 @@ import evans.ben.archerytracker.R;
 import evans.ben.archerytracker.scoring.Round;
 import evans.ben.archerytracker.scoring.round.RoundActivity;
 
-public class RoundSelectionAdapter extends RecyclerView.Adapter<RoundSelectionAdapter.RoundSelectionViewHolder> {
+public class RoundSelectionAdapter extends RecyclerView.Adapter<RoundSelectionAdapter.RoundSelectionViewHolder> implements Filterable {
+    // Class variable to store filtered list of rounds
+    private List<Round> filtered = new ArrayList<>();
+
+    // Filter for searching
+    @Override
+    public Filter getFilter() {
+        return new RoundsFilter();
+    }
+
+    private class RoundsFilter extends Filter {
+
+        @Override
+        protected FilterResults performFiltering(CharSequence searchTerm) {
+            List<Round> filteredRounds = new ArrayList<>();
+            // Search algorithm
+
+            for (Round i : roundsList) {
+                if (i.getRoundName().toLowerCase().contains(searchTerm.toString().toLowerCase())) {
+                    filteredRounds.add(i);
+                }
+            }
+
+            FilterResults results = new FilterResults();
+            results.values = filteredRounds;
+            results.count = filteredRounds.size();
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+            filtered = (List<Round>) filterResults.values;
+            notifyDataSetChanged();
+        }
+    }
 
     public static class RoundSelectionViewHolder extends RecyclerView.ViewHolder {
         // Preparing variables for all the views involved in the recyclerview
@@ -138,13 +174,24 @@ public class RoundSelectionAdapter extends RecyclerView.Adapter<RoundSelectionAd
 
     @Override
     public void onBindViewHolder(@NonNull RoundSelectionViewHolder holder, int position) {
-        Round current = roundsList.get(position);
+        Round current;
+        if (filtered == null || filtered.size() == 0) {
+            current = roundsList.get(position);
+        }
+        else {
+            current = filtered.get(position);
+        }
         holder.roundSelectionContainerView.setTag(current);
         holder.nameTextView.setText(current.getRoundName());
     }
 
     @Override
     public int getItemCount() {
-        return roundsList.size();
+        if (filtered == null || filtered.size() == 0) {
+            return roundsList.size();
+        }
+        else {
+            return filtered.size();
+        }
     }
 }

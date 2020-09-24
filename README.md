@@ -2,9 +2,10 @@
 This is my CS50 final project.
 
 ## Features
-* A daily arrow counter is shown on the bottom right of the home screen, it includes arrows added via the arrow counter or from arrows shot in scored rounds. This counter resets each day.
-* A weekly arrow counter is shown on the bottom left of the home screen, it shows the number of arrows shot from the previous Monday to the current date inclusive.
-* There is an arrow counter which can be used to add and substract arrows from the daily arrow counter using plus and minus buttons. Accessed by pressing the "Arrow Counter" button on the home screen.
+* Arrow counter
+ * A daily arrow counter is shown on the bottom right of the home screen, it includes arrows added via the arrow counter or from arrows shot in scored rounds. This counter resets each day.
+ * A weekly arrow counter is shown on the bottom left of the home screen, it shows the number of arrows shot from the previous Monday to the current date inclusive.
+ * There is an arrow counter which can be used to add and substract arrows from the daily arrow counter using plus and minus buttons. Accessed by pressing the "Arrow Counter" button on the home screen.
 
 * Shooting a round
   * The app includes a selection of archery rounds. Once you click "New Round" you'll be able to choose from this list, you can also search the list by round name.
@@ -17,7 +18,7 @@ This is my CS50 final project.
   * The distance selection screen also shows your current total score and score for each distance.
   * Once a round is completed a save button appears and you can save your round. Saving the round will take you to the full scorecard which includes a summary of arrows shot at each value on the target, as well as the number of hits and overall average. There is also the option for the archer and scorer to sign the scorecard.
     
-* Round History
+* Round history
   * You can view your past rounds by selecting "Round History", this will display the most recently recorded rounds first. You can also filter the history by the name of the round.
   * You can select a round in the round history to see the completed scorecard for that round.
  

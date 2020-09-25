@@ -17,6 +17,7 @@ This is my CS50 final project.
   * Once a round is selected it then displays the distances for that round, which you can select to then score arrows for that distance.
   * The scoring screen displays the scorecard for that distance which includes arrow values, end totals and running totals. The current selected box is highlighted in red and this is where input from the buttons will fill. The selected box automatically moves to the next arrow when a value is entered. You can select any arrow value box by clicking on it.
   * There are buttons coloured according to the colours on the target for entering arrow values. The buttons change depending on the scoring type of the round. For indoor rounds there is no "X" as I'm a recurve archer.
+  
 ![Scoring screenshot metric outdoors](scoring_outdoor.png)
 ![Scoring screenshot imperial outdoors](scoring_imperial.png)
 ![Scoring screenshot Worcester Round](scoring_worcester.png)
@@ -40,6 +41,7 @@ This is my CS50 final project.
 
 #### Sight marks
   * If you select the sight marks button in the bottom navigation bar you can view your sight marks. These are sorted into metric sight marks first in ascending order and then imperial sight marks also in ascending order.
+  
   ![Sight marks list screenshot](sightmarks_list.png)  
   * You can add a new sight mark by selecting the add button, which will then bring up a screen for you to fill in the distance, use a drop down to select the units (m or yd) and type in your sight mark.
   * If you exit an incomplete sight mark the app will automatically delete the sight mark and let you know.

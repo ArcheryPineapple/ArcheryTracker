@@ -37,6 +37,7 @@ This is my CS50 final project.
 
 #### PB's
   * You can view your personal best score for all rounds recorded in the app by selecting the "PB's" button.
+  
   ![PB's screenshot](pbs.png)
 
 #### Sight marks

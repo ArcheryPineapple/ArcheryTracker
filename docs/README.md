@@ -45,11 +45,13 @@ This is my CS50 final project.
   
   ![Sight marks list screenshot](sightmarks_list.png)  
   * You can add a new sight mark by selecting the add button, which will then bring up a screen for you to fill in the distance, use a drop down to select the units (m or yd) and type in your sight mark.
+  
+  ![Creating sight mark screenshot](create_sightmark.png)
+  
   * If you exit an incomplete sight mark the app will automatically delete the sight mark and let you know.
   * You can save a completed sight mark by pressing the save button or simply by pressing back.
   * If you click on a sight mark there is also a delete button.
 
-  ![Creating sight mark screenshot](create_sightmark.png)
 
 #### Coaching notes
   * If you select the coaching notes button in the bottom navigation bar you can view a list of notes. These are sorted by most recent first.
@@ -57,8 +59,9 @@ This is my CS50 final project.
   ![Coaching notes list screenshot](notes_list.png)
   * On this screen you can see the date the note was created and the title of the note.
   * By clicking on a note you can see its date of creation, title and contents, the title and contents are editable. The changes to these fields can be saved by pressing the save button or by pressing the back button.
+  
+  ![Creating note screenshot](create_note.png)  
+  
   * You can add a new note by clicking the add button, which will create a note with today's date associated with it.
   * You can save a note without content but it must have a title. If you attempt to save or exit a note with no title it will not be saved and the app will inform you of this.
-  * There is also a delete button in each note.
-
-  ![Creating note screenshot](create_note.png)   
+  * There is also a delete button in each note. 

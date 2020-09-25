@@ -97,7 +97,7 @@ public class NotesActivity extends AppCompatActivity {
         if (title.equals("")) {
             NotesFragment.notesDatabase.notesDao().deleteNote(id);
             Toast toast = Toast.makeText(getApplicationContext(),
-                    "The note was incomplete, it has been deleted.", Toast.LENGTH_LONG);
+                    "The note was incomplete, it has been deleted.", Toast.LENGTH_SHORT);
             toast.setGravity(Gravity.CENTER, 0, 0);
             toast.show();
         }

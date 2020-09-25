@@ -3,6 +3,7 @@ package evans.ben.archerytracker.scoring.pbs;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
@@ -41,7 +42,7 @@ public class PBsActivity extends AppCompatActivity {
             int score = MainActivity.completedRoundsDatabase.completedRoundsDao().getPB(round);
             LinearLayout pb = new LinearLayout(this);
             LinearLayout.LayoutParams lpPB = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            lpPB.setMargins(0, 0, 0, 20);
+            lpPB.setMargins(0, 0, 0, 40);
             pb.setLayoutParams(lpPB);
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             lp.weight = 1;

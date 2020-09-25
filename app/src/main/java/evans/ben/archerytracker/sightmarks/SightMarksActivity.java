@@ -142,7 +142,7 @@ public class SightMarksActivity extends AppCompatActivity implements AdapterView
             catch (NumberFormatException nfe) {
                 Toast toast = Toast.makeText(getApplicationContext(),
                         "The distance you entered was not a number it has been set to 0.",
-                        Toast.LENGTH_LONG);
+                        Toast.LENGTH_SHORT);
                 toast.setGravity(Gravity.CENTER, 0, 0);
                 toast.show();
                 int_dist = 0;
@@ -165,7 +165,7 @@ public class SightMarksActivity extends AppCompatActivity implements AdapterView
         if (dist.equals("") || mark.equals("") || unit.equals("Choose unit")) {
             SightMarksFragment.sightMarksDatabase.sightMarksDao().deleteSightMark(id);
             Toast toast = Toast.makeText(getApplicationContext(),
-                    "The sight mark was incomplete, it has been deleted.", Toast.LENGTH_LONG);
+                    "The sight mark was incomplete, it has been deleted.", Toast.LENGTH_SHORT);
             toast.setGravity(Gravity.CENTER, 0, 0);
             toast.show();
         }

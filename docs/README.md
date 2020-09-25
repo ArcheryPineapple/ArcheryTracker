@@ -3,6 +3,7 @@ This is my CS50 final project.
 
 ## Features
 * Arrow counter
+
 ![Home page screenshot](home_page.png)
   * A daily arrow counter is shown on the bottom right of the home screen, it includes arrows added via the arrow counter or from arrows shot in scored rounds. This counter resets each day.
   * A weekly arrow counter is shown on the bottom left of the home screen, it shows the number of arrows shot from the previous Monday to the current date inclusive.
@@ -24,6 +25,7 @@ This is my CS50 final project.
   ![Scorecard screenshot](scorecard.png)
 
 * Round history
+
 ![Round history screenshot](round_history.png)
   * You can view your past rounds by selecting "Round History", this will display the most recently recorded rounds first. You can also filter the history by the name of the round.
   * You can select a round in the round history to see the completed scorecard for that round.

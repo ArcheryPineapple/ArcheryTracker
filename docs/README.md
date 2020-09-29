@@ -1,5 +1,5 @@
 # Archery Tracker
-This is my CS50 final project.
+This is my CS50 final project. Below is video demonstrating the main features. More details about the features can be found further down.
 
 [![Youtube video of app in action](https://img.youtube.com/vi/uMfNU6CgHgQ/0.jpg)](https://youtu.be/uMfNU6CgHgQ)
 

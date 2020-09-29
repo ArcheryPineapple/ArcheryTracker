@@ -1,6 +1,8 @@
 # Archery Tracker
 This is my CS50 final project.
 
+[![Youtube video of app in action](https://img.youtube.com/vi/uMfNU6CgHgQ/0.jpg)](https://youtu.be/uMfNU6CgHgQ)
+
 ## Features
 ##### Arrow counter
   * A daily arrow counter is shown on the bottom right of the home screen, it includes arrows added via the arrow counter or from arrows shot in scored rounds. This counter resets each day.
